@@ -1,10 +1,8 @@
+import type { JWT } from "next-auth/jwt";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import {
-  getServerSession,
-  type DefaultSession,
-  type NextAuthOptions,
-} from "next-auth";
-import { type Adapter } from "next-auth/adapters";
+import type { NextAuthConfig, DefaultSession, Session, User } from "next-auth";
+
+import NextAuth from "next-auth";
 // import DiscordProvider from "next-auth/providers/discord";
 import SpotifyProvider from "next-auth/providers/spotify";
 import GithubProvider from "next-auth/providers/github";
@@ -39,17 +37,25 @@ declare module "next-auth" {
  *
  * @see https://next-auth.js.org/configuration/options
  */
-export const authOptions: NextAuthOptions = {
+export const authConfig: NextAuthConfig = {
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
+    session: async ({
+      session,
+      user,
+    }: // token,
+    {
+      session: Session;
+      user: User;
+      token: JWT;
+    }): Promise<Session> => {
+      const sesh = {
+        ...session,
+        user: { ...session.user, id: user.id },
+      } as Session;
+      return sesh;
+    },
   },
-  adapter: DrizzleAdapter(db, createTable) as Adapter,
+  adapter: DrizzleAdapter(db, createTable),
   providers: [
     GithubProvider({
       clientId: env.GITHUB_CLIENT_ID,
@@ -76,4 +82,10 @@ export const authOptions: NextAuthOptions = {
  *
  * @see https://next-auth.js.org/configuration/nextjs
  */
-export const getServerAuthSession = () => getServerSession(authOptions);
+// export const getServerAuthSession = () => getServerSession(authOptions);
+
+// next-auth (authjs) v5
+export const {
+  handlers: { GET, POST },
+  auth,
+} = NextAuth(authConfig);
