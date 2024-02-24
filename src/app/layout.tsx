@@ -13,7 +13,7 @@ const inter = Inter({
 export const metadata = {
   title: "Slom n Dom Music App",
   description: "Slom & Dom Music App",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: [{ rel: "icon", url: "/favicon/favicon.ico" }],
 };
 
 export default function RootLayout({
