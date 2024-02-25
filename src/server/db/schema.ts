@@ -52,6 +52,7 @@ export const users = createTable("user", {
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
   sessions: many(sessions),
+  tokens: many(tokens),
 }));
 
 export const accounts = createTable(
@@ -83,13 +84,30 @@ export const accountsRelations = relations(accounts, ({ one }) => ({
   user: one(users, { fields: [accounts.userId], references: [users.id] }),
 }));
 
+export const tokens = createTable(
+  "token",
+  {
+    userId: varchar("userId", { length: 255 }).notNull(),
+    accessToken: varchar("accessToken", { length: 255 }).notNull().primaryKey(),
+    service: varchar("service", { length: 255 }).notNull(),
+    expires: timestamp("expires", { mode: "date" }).notNull(),
+  },
+  (token) => ({
+    userIdIdx: index("token_userId_idx").on(token.userId),
+  }),
+);
+
+export const tokensRelations = relations(tokens, ({ one }) => ({
+  user: one(users, { fields: [tokens.userId], references: [users.id] }),
+}));
+
 export const sessions = createTable(
   "session",
   {
+    userId: varchar("userId", { length: 255 }).notNull(),
     sessionToken: varchar("sessionToken", { length: 255 })
       .notNull()
       .primaryKey(),
-    userId: varchar("userId", { length: 255 }).notNull(),
     expires: timestamp("expires", { mode: "date" }).notNull(),
   },
   (session) => ({

@@ -2,16 +2,16 @@
 import "client-only";
 
 import Button from "@mui/material/Button";
-import { signIn } from "next-auth/react";
+import { signOut } from "next-auth/react";
 
-export default function LoginButton() {
+export default function SignOutButton() {
   return (
     <Button
       variant="contained"
       onClick={() => {
-        void signIn("spotify");
+        void signOut();
       }}>
-      Login
+      Sign Out
     </Button>
   );
 }

@@ -3,15 +3,11 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import CssBaseline from "@mui/material/CssBaseline";
 
 import type { Metadata } from "next";
 
-import { Inter } from "next/font/google";
-
-const inter = Inter({
-  subsets: ["latin"],
-});
+import CssBaseline from "@mui/material/CssBaseline";
+import CustomThemeProvider from "../styles/CustomThemeProvider";
 
 export const metadata: Metadata = {
   title: {
@@ -37,9 +33,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <CssBaseline />
-        {children}
+      <body>
+        <CustomThemeProvider>{children}</CustomThemeProvider>
       </body>
     </html>
   );
