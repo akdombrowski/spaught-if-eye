@@ -12,6 +12,8 @@ import { env } from "~/env";
 import { db } from "~/server/db";
 import { createTable, users, tokens } from "~/server/db/schema";
 
+const DEBUG_CALLBACKS = false;
+
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
  * object and keep type safety.
@@ -40,11 +42,63 @@ declare module "next-auth" {
  */
 export const authConfig: NextAuthConfig = {
   callbacks: {
+    signIn: async ({ user, account, profile, email, credentials }) => {
+      if (DEBUG_CALLBACKS) {
+        console.log();
+        console.log("***************");
+        console.log("===============");
+        console.log("SIGNIN CALLBACK");
+        console.log("===============");
+        console.log();
+        console.log("account:", account);
+        console.log();
+        console.log("credentials:", credentials);
+        console.log();
+        console.log("***************");
+        console.log();
+      }
+      // const userId = account?.userId;
+      // const accessToken = account?.access_token;
+      // if (userId && accessToken) {
+      //   const usersTokens = await db.query.tokens.findMany({
+      //     where: eq(users.id, userId),
+      //   });
+      //   if (DEBUG_CALLBACKS) {
+      //     console.log(`found tokens for user ${userId}`);
+      //     console.log(usersTokens);
+      //   }
+      //   if (usersTokens.length > 1) {
+      //     console.error("why does this user have more than one token???");
+      //     throw new Error("why does this user have more than one token???");
+      //   } else if (usersTokens.length) {
+      //     // const userToken = usersTokens[0];
+      //     await db
+      //       .update(tokens)
+      //       .set({ providerAccessToken: accessToken })
+      //       .where(eq(users.id, userId));
+      //     if (DEBUG_CALLBACKS) {
+      //       console.log("updated access token in tokens table");
+      //     }
+      //   } else {
+      //     await db.insert(tokens).values({
+      //       userId: userId,
+      //       providerAccessToken: accessToken,
+      //       provider: "spotify",
+      //       expires: new Date(1708896426 - 60 * 60 * 1000), // 1min early
+      //     });
+      //     if (DEBUG_CALLBACKS) {
+      //       console.log("updated access token in tokens table");
+      //     }
+      //   }
+      // }
+
+      return true;
+    },
     session: async ({
       session,
       user,
-    }: // token,
-    {
+      token,
+    }: {
       session: Session;
       user: User;
       token: JWT;
@@ -53,37 +107,21 @@ export const authConfig: NextAuthConfig = {
         ...session,
         user: { ...session.user, id: user.id },
       } as Session;
-      return sesh;
-    },
-    jwt: async ({ token, account }) => {
-      // Persist the OAuth access_token to the token right after signin
-      if (account) {
-        token.accessToken = account.access_token;
-        if (account.userId) {
-          const usersTokens = await db.query.tokens.findMany({
-            where: eq(users.id, account.userId),
-          });
-          if (usersTokens.length > 1) {
-            console.error("why does this user have more than one token???");
-            throw new Error("why does this user have more than one token???");
-          } else if (usersTokens.length) {
-            const userToken = usersTokens[0];
-            await db
-              .update(tokens)
-              .set({ accessToken: token.accessToken as string })
-              .where(eq(users.id, account.userId));
-          } else {
-            await db.insert(tokens).values({
-              userId: account.id as string,
-              accessToken: token.accessToken as string,
-              service: "spotify",
-              expires: new Date(Date.now() + 5 * 60 * 1000), // 5min default for now
-            });
-          }
-        }
+      if (DEBUG_CALLBACKS) {
+        console.log();
+        console.log("****************");
+        console.log("================");
+        console.log("SESSION CALLBACK");
+        console.log("================");
+        console.log();
+        console.log("session:", session);
+        console.log();
+        console.log("token:", token);
+        console.log();
+        console.log("****************");
+        console.log();
       }
-
-      return token;
+      return sesh;
     },
   },
   adapter: DrizzleAdapter(db, createTable),

@@ -88,8 +88,10 @@ export const tokens = createTable(
   "token",
   {
     userId: varchar("userId", { length: 255 }).notNull(),
-    accessToken: varchar("accessToken", { length: 255 }).notNull().primaryKey(),
-    service: varchar("service", { length: 255 }).notNull(),
+    providerAccessToken: varchar("providerAccessToken", { length: 255 })
+      .notNull()
+      .primaryKey(),
+    provider: varchar("provider", { length: 255, enum: ["spotify"] }).notNull(),
     expires: timestamp("expires", { mode: "date" }).notNull(),
   },
   (token) => ({
