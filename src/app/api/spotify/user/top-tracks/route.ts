@@ -1,11 +1,10 @@
-import { Session, User } from "next-auth";
-import { cookies, headers } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import type { User } from "next-auth";
+import { type NextRequest, NextResponse } from "next/server";
 import { db } from "@/server/db";
-import { accounts, users } from "@/server/db/schema";
-import { eq, lt, gte, ne } from "drizzle-orm";
+import { users } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
 import { auth } from "@/server/auth";
-import { SpotifyAPIUserTopResponse, Track } from "@/types/SpotifyAPI";
+import type { SpotifyAPIUserTopResponse, Track } from "@/types/SpotifyAPI";
 import { redirect } from "next/navigation";
 
 const getToken = async (userId: User["id"]): Promise<string | null> => {
@@ -25,13 +24,15 @@ const getToken = async (userId: User["id"]): Promise<string | null> => {
   return null;
 };
 
-export async function getTopTracks(token: string): Promise<Track[]> {
+async function getTopTracks(token: string): Promise<Track[] | null> {
   const headers = new Headers();
   headers.append("Authorization", "Bearer " + token);
   const res = await fetch("https://api.spotify.com/v1/me/top/tracks");
   const topTracksRes = (await res.json()) as SpotifyAPIUserTopResponse;
   const topTracks = topTracksRes?.items;
-
+  if (!topTracks) {
+    return null;
+  }
   return topTracks as Track[];
 }
 
@@ -39,21 +40,32 @@ export async function GET(request: NextRequest) {
   const session = (await auth())!;
   const token = await getToken(session?.user?.id);
   if (!token) {
-    const signInURL = new URL("app/api/auth/signin", request.nextUrl.basePath);
+    console.error("need to sign in");
+    const signInURL = new URL("/api/auth/signin", request.nextUrl);
     redirect(signInURL.href);
   }
-  const topTracks: Track[] = await getTopTracks(token);
-  return NextResponse.json(topTracks, { status: 200 });
+  const topTracks: Track[] | null = await getTopTracks(token);
+  if (!topTracks?.length) {
+    console.error("no top tracks");
+
+    return NextResponse.error();
+  }
+  return NextResponse.json({ topTracks }, { status: 200 });
 }
 
 export async function POST(request: NextRequest) {
   const session = (await auth())!;
   const token = await getToken(session?.user?.id);
   if (!token) {
-    const signinURL = new URL("/api/auth/signin", request.nextUrl.basePath);
-    return NextResponse.redirect(signinURL);
+    console.error("need to sign in");
+    const signinURL = new URL("/api/auth/signin", request.nextUrl);
+    redirect(signinURL.href);
   }
 
-  const topTracks: Track[] = await getTopTracks(token);
-  return NextResponse.json(topTracks, { status: 200 });
+  const topTracks: Track[] | null = await getTopTracks(token);
+  if (!topTracks?.length) {
+    console.error("no top tracks");
+    return NextResponse.error();
+  }
+  return NextResponse.json({ topTracks }, { status: 200 });
 }

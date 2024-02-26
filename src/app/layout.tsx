@@ -1,14 +1,16 @@
-import "@/styles/globals.css";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import CssBaseline from "@mui/material/CssBaseline";
-import CustomThemeProvider from "../styles/CustomThemeProvider";
+import CustomThemeProvider from "@/styles/CustomThemeProvider";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "@/styles/theme";
 
 export const metadata: Metadata = {
   title: {
@@ -27,16 +29,16 @@ export const metadata: Metadata = {
   publisher: "Anthony Dombrowski",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
         <AppRouterCacheProvider>
-          <CustomThemeProvider>{children}</CustomThemeProvider>
+          {/* <CustomThemeProvider>{children}</CustomThemeProvider> */}
+          <ThemeProvider theme={theme}>
+            {/* <CssBaseline /> */}
+            {children}
+          </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
     </html>

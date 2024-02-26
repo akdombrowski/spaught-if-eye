@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import SignInButton from "./SignInButton";
 import Link from "next/link";
 
-export default function SignInSide() {
+export default function SignInPage() {
   return (
     <Grid container sx={{ height: "100vh" }}>
       {/* START Grid Image Side */}

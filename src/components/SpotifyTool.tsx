@@ -1,34 +1,36 @@
-"use server";
-import "server-only";
-
-import { signIn } from "next-auth/react";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Unstable_Grid2/Grid2";
+import Grid from "@mui/material/Unstable_Grid2";
 import Tracks from "./Tracks";
-import { getTopTracks } from "@/server/actions/getTopTracks";
+import type { Track } from "../types/SpotifyAPI";
+import SignInButton from "./SignInButton";
 
 export default async function SpotifyTool() {
-  const topTracks = await getTopTracks();
+  const tracks = async () => {
+    try {
+      const res = await fetch(
+        "http://localhost:3000/api/spotify/user/top-tracks",
+      );
+
+      const { topTracks } = await res.json();
+
+      console.log("topTracks:");
+      console.log(topTracks);
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      return topTracks;
+    } catch (error) {
+      return <Typography>ERROR fetching</Typography>;
+    }
+    return <></>;
+  };
+  const topTracks = await tracks();
 
   return (
-    <Grid container>
+    <Grid xs={12}>
       <Grid xs={12}>
         <Typography>Top Tracks</Typography>
-        <Tracks songs={topTracks} />
-      </Grid>
-      <Grid xs={12}>
-        <Button
-          size="large"
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-          onClick={() => {
-            void signIn("spotify");
-          }}>
-          Sign In
-        </Button>
+        <Tracks songs={tracks()} />
       </Grid>
     </Grid>
   );
