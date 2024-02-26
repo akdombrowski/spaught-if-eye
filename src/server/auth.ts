@@ -1,7 +1,13 @@
 import type { JWT } from "next-auth/jwt";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { eq, lt, gte, ne } from "drizzle-orm";
-import type { NextAuthConfig, DefaultSession, Session, User } from "next-auth";
+import type {
+  NextAuthConfig,
+  DefaultSession,
+  Session,
+  User,
+  NextAuthResult,
+} from "next-auth";
 
 import NextAuth from "next-auth";
 // import DiscordProvider from "next-auth/providers/discord";
@@ -11,6 +17,7 @@ import SpotifyProvider from "next-auth/providers/spotify";
 import { env } from "~/env";
 import { db } from "~/server/db";
 import { createTable, users, tokens } from "~/server/db/schema";
+import { NextRequest } from "next/server";
 
 const DEBUG_CALLBACKS = false;
 

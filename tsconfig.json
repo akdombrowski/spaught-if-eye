@@ -8,26 +8,46 @@
     "resolveJsonModule": true,
     "moduleDetection": "force",
     "isolatedModules": true,
-
     /* Strictness */
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "checkJs": true,
-
     /* Bundled projects */
-    "lib": ["dom", "dom.iterable", "ES2022"],
-    "noEmit": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "ES2022"
+    ],
+    // "noEmit": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "jsx": "preserve",
-    "plugins": [{ "name": "next" }],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "incremental": true,
-
+    "paths": {
+      "~/*": [
+        "./src/*"
+      ]
+    },
     /* Path Aliases */
     "baseUrl": ".",
-    "paths": {
-      "~/*": ["./src/*"]
-    }
+    // Generate d.ts files
+    "declaration": true,
+    // This compiler run should
+    // only output d.ts files
+    "emitDeclarationOnly": true,
+    // Types should go into this directory.
+    // Removing this would place the .d.ts files
+    // next to the .js files
+    "outDir": "src/types",
+    // go to js file when using IDE functions like
+    // "Go to Definition" in VSCode
+    "declarationMap": true,
+    "noEmit": true
   },
   "include": [
     ".eslintrc.cjs",
@@ -38,5 +58,7 @@
     "**/*.js",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -3,28 +3,26 @@ import "server-only";
 
 import { signIn } from "next-auth/react";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import ButtonBase from "@mui/material/ButtonBase";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
+import Tracks, { type Track } from "./Tracks";
+import { getTopTracks } from "../server/actions/getTopTracks";
 
 export default async function SpotifyTool() {
   const topTracks = async () => {
-    const res = await fetch("/api/spotify/user/top-tracks");
+    const res = await getTopTracks();
     const tracks = await res.json();
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
-    return tracks.items;
+    return tracks.items as Track[];
   };
+
+  const songs = await topTracks();
 
   return (
     <Grid container>
       <Grid xs={12}>
         <Typography>Top Tracks</Typography>
-        <Typography>
-          {topTracks().map((x, i) => {
-            return <p key={i}>{x}</p>;
-          })}
-        </Typography>
+        <Tracks {...songs} />
       </Grid>
       <Grid xs={12}>
         <Button
