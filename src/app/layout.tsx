@@ -1,4 +1,4 @@
-import "~/styles/globals.css";
+import "@/styles/globals.css";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
@@ -6,6 +6,7 @@ import "@fontsource/roboto/700.css";
 
 import type { Metadata } from "next";
 
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import CssBaseline from "@mui/material/CssBaseline";
 import CustomThemeProvider from "../styles/CustomThemeProvider";
 
@@ -34,7 +35,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <CustomThemeProvider>{children}</CustomThemeProvider>
+        <AppRouterCacheProvider>
+          <CustomThemeProvider>{children}</CustomThemeProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );

@@ -1,3 +1,6 @@
+"use client";
+import "client-only";
+
 import { type ThemeOptions, createTheme } from "@mui/material/styles";
 import { type PaletteMode } from "@mui/material";
 

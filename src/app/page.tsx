@@ -1,7 +1,7 @@
 "use server";
 import "server-only";
 
-import { auth } from "src/server/auth";
+import { auth } from "@/server/auth";
 
 import Grid from "@mui/material/Unstable_Grid2";
 import Container from "@mui/material/Container";

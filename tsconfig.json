@@ -13,11 +13,7 @@
     "noUncheckedIndexedAccess": true,
     "checkJs": true,
     /* Bundled projects */
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "ES2022"
-    ],
+    "lib": ["dom", "dom.iterable", "ES2022"],
     // "noEmit": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
@@ -28,25 +24,31 @@
       }
     ],
     "incremental": true,
-    "paths": {
-      "~/*": [
-        "./src/*"
-      ]
-    },
+
     /* Path Aliases */
     "baseUrl": ".",
+    // module path aliases
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/auth/*": ["./sruc/app/api/auth/*"]
+    },
+
     // Generate d.ts files
-    "declaration": true,
+    // "declaration": true,
     // This compiler run should
     // only output d.ts files
-    "emitDeclarationOnly": true,
+    // "emitDeclarationOnly": true,
     // Types should go into this directory.
     // Removing this would place the .d.ts files
     // next to the .js files
-    "outDir": "src/types",
+    // "outDir": "./src/",
+    // "declarationDir": "types",
     // go to js file when using IDE functions like
     // "Go to Definition" in VSCode
-    "declarationMap": true,
+    // "declarationMap": true,
+    // for when DEBUGGING LOCALLY:
+    // "mapRoot": "http://localhost:3000/"
+
     "noEmit": true
   },
   "include": [
@@ -58,7 +60,5 @@
     "**/*.js",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

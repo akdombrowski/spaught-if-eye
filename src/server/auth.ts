@@ -14,9 +14,9 @@ import NextAuth from "next-auth";
 import SpotifyProvider from "next-auth/providers/spotify";
 // import GithubProvider from "next-auth/providers/github";
 
-import { env } from "~/env";
-import { db } from "~/server/db";
-import { createTable, users, tokens } from "~/server/db/schema";
+import { env } from "@/env";
+import { db } from "@/server/db";
+import { createTable, users, tokens } from "@/server/db/schema";
 import { NextRequest } from "next/server";
 
 const DEBUG_CALLBACKS = false;
