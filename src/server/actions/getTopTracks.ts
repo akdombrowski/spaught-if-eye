@@ -6,7 +6,7 @@ import {
 
 export default async function getTopTracks(
   token: string,
-): Promise<Track[] | string | null> {
+): Promise<Track[] | "Unauthorized" | null> {
   const headers = new Headers();
   headers.append("Authorization", "Bearer " + token);
   const res = await fetch("https://api.spotify.com/v1/me/top/tracks");

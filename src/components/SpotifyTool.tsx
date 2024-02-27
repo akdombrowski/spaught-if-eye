@@ -11,7 +11,7 @@ import { auth } from "@/server/auth";
 
 import type { Track } from "@/types/SpotifyAPI";
 
-const tracks = async (): Promise<Track[] | string | null> => {
+const tracks = async (): Promise<Track[] | "Unaouthorized" | null> => {
   const session = (await auth())!;
   if (!session) {
     redirect("/api/auth/signin");
@@ -29,7 +29,7 @@ const tracks = async (): Promise<Track[] | string | null> => {
     }
 
     if (tracks === "Unauthorized") {
-      refreshToken(session?.user?.id);
+      await refreshToken(session?.user?.id);
       redirect("/api/auth/signin");
     }
 
@@ -45,7 +45,7 @@ const tracks = async (): Promise<Track[] | string | null> => {
   }
 };
 
-const topTracks = await tracks();
+const topTracks = (await tracks()) as Track[];
 
 export default function SpotifyTool() {
   return (
