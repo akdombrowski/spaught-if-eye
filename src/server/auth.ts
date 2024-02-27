@@ -48,6 +48,10 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authConfig: NextAuthConfig = {
+  session: {
+    maxAge: 3000,
+    updateAge: 3000,
+  },
   callbacks: {
     signIn: async ({ user, account, profile, email, credentials }) => {
       if (DEBUG_CALLBACKS) {

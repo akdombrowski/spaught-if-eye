@@ -1,36 +1,58 @@
-import Button from "@mui/material/Button";
+import { redirect } from "next/navigation";
+
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Unstable_Grid2";
 import Tracks from "./Tracks";
-import type { Track } from "../types/SpotifyAPI";
-import SignInButton from "./SignInButton";
 
-export default async function SpotifyTool() {
-  const tracks = async () => {
-    try {
-      const res = await fetch(
-        "http://localhost:3000/api/spotify/user/top-tracks",
-      );
+import getToken, { refreshToken } from "@/server/actions/spotifyToken";
+import getTopTracks from "@/server/actions/getTopTracks";
 
-      const { topTracks } = await res.json();
+import { auth } from "@/server/auth";
 
-      console.log("topTracks:");
-      console.log(topTracks);
+import type { Track } from "@/types/SpotifyAPI";
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      return topTracks;
-    } catch (error) {
-      return <Typography>ERROR fetching</Typography>;
+const tracks = async (): Promise<Track[] | string | null> => {
+  const session = (await auth())!;
+  if (!session) {
+    redirect("/api/auth/signin");
+  }
+  const token = await getToken(session?.user?.id);
+  if (!token) {
+    console.log("need to sign in");
+    redirect("/api/auth/signin");
+  }
+  try {
+    const tracks = await getTopTracks(token);
+
+    if (!tracks) {
+      throw new Error("failed to fetch top tracks", { cause: tracks });
     }
-    return <></>;
-  };
-  const topTracks = await tracks();
 
+    if (tracks === "Unauthorized") {
+      refreshToken(session?.user?.id);
+      redirect("/api/auth/signin");
+    }
+
+    console.log("tracks:");
+    console.log(tracks);
+
+    return tracks;
+  } catch (error) {
+    console.error("failed to fetch top tracks");
+    console.error(error);
+
+    return null;
+  }
+};
+
+const topTracks = await tracks();
+
+export default function SpotifyTool() {
   return (
     <Grid xs={12}>
       <Grid xs={12}>
         <Typography>Top Tracks</Typography>
-        <Tracks songs={tracks()} />
+        {topTracks && <Tracks songs={topTracks} />}
       </Grid>
     </Grid>
   );

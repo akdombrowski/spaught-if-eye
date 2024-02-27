@@ -45,10 +45,8 @@ export async function GET(request: NextRequest) {
     redirect(signInURL.href);
   }
   const topTracks: Track[] | null = await getTopTracks(token);
-  if (!topTracks?.length) {
+  if (!topTracks) {
     console.error("no top tracks");
-
-    return NextResponse.error();
   }
   return NextResponse.json({ topTracks }, { status: 200 });
 }
@@ -58,12 +56,12 @@ export async function POST(request: NextRequest) {
   const token = await getToken(session?.user?.id);
   if (!token) {
     console.error("need to sign in");
-    const signinURL = new URL("/api/auth/signin", request.nextUrl);
-    redirect(signinURL.href);
+    const signInURL = new URL("/api/auth/signin", request.nextUrl);
+    redirect(signInURL.href);
   }
 
   const topTracks: Track[] | null = await getTopTracks(token);
-  if (!topTracks?.length) {
+  if (!topTracks) {
     console.error("no top tracks");
     return NextResponse.error();
   }

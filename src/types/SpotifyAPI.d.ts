@@ -54,7 +54,7 @@ export interface Album {
   release_date: string;
   release_date_precision: ReleaseDatePrecision;
   total_tracks: number;
-  type: AlbumTypeEnum;
+  type: ItemType;
   uri: string;
 }
 
@@ -92,15 +92,8 @@ export enum ReleaseDatePrecision {
   Year = "year",
 }
 
-export enum AlbumTypeEnum {
-  Album = "album",
-}
-
 export interface ExternalIDS {
   isrc: string;
 }
 
-export enum ItemType {
-  Track = "track",
-  Album = "album",
-}
+export type ItemType = "track" | "album";

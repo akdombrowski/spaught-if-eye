@@ -30,7 +30,8 @@
     // module path aliases
     "paths": {
       "@/*": ["./src/*"],
-      "@/auth/*": ["./sruc/app/api/auth/*"]
+      "@/types/*": ["./src/types/*"],
+      "@/auth/*": ["./src/app/api/auth/*"]
     },
 
     // Generate d.ts files
@@ -55,6 +56,7 @@
     ".eslintrc.cjs",
     "next-env.d.ts",
     "**/*.ts",
+    "**/types/*d.ts",
     "**/*.tsx",
     "**/*.cjs",
     "**/*.js",
