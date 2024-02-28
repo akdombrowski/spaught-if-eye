@@ -1,22 +1,44 @@
-import {
-  type Track,
-  type SpotifyAPIUserTopResponse,
-  type ItemType,
-} from "@/types/SpotifyAPI";
+import { type Track, type SpotifyAPIUserTopResponse } from "@/types/SpotifyAPI";
+import { getToken, refreshToken } from "./spotifyToken";
+import { auth } from "@/server/auth";
 
-export default async function getTopTracks(
-  token: string,
-): Promise<Track[] | "Unauthorized" | null> {
+export default async function getTopTracks(): Promise<
+  Track[] | "Unauthorized" | null
+> {
+  let session = await auth();
+  let user = session?.user;
+  let token = await getToken(user?.id);
+  if (!token) {
+    console.log("no token found in gettoptracks");
+    await refreshToken(user?.id);
+
+    session = await auth();
+    user = session?.user;
+    token = await getToken(user?.id);
+    if (!token) {
+      console.error("tried refreshing token but still can't get one");
+    }
+  }
+
   const headers = new Headers();
   headers.append("Authorization", "Bearer " + token);
   const res = await fetch("https://api.spotify.com/v1/me/top/tracks");
 
   if (res.ok) {
     const topTracksRes = (await res.json()) as SpotifyAPIUserTopResponse;
+
+    console.log("spotify api response");
+    console.log(topTracksRes);
+
     const topTracks = topTracksRes?.items;
     if (!topTracks) {
+      console.error("no tracks");
       return null;
     }
+
+    console.log("spotify api response topTracks");
+    console.log(topTracks);
+
     if (topTracks.length) {
       if (topTracks[0]?.type === "album") {
         console.error("Got albums instead of tracks back");

@@ -10,10 +10,13 @@
     "isolatedModules": true,
     /* Strictness */
     "strict": true,
+    "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
     "checkJs": true,
+    "noImplicitAny": false,
+
     /* Bundled projects */
-    "lib": ["dom", "dom.iterable", "ES2022"],
+    "lib": ["dom", "dom.iterable", "ES2022", "ESNext"],
     // "noEmit": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",

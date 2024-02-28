@@ -24,23 +24,27 @@ export const getToken = async (userId: User["id"]): Promise<string | null> => {
 
 export const refreshToken = async (
   userId: User["id"],
-): Promise<boolean | null> => {
+): Promise<string | null> => {
   if (!userId) {
-    return null;
+    console.log("no userid given. redirecting to signin to get fresh session");
+    redirect("/api/auth/signin");
   }
   try {
     const usersSessions = await db.query.sessions.findMany({
       where: eq(sessions.userId, userId),
     });
     if (usersSessions.length) {
+      console.log(`${usersSessions.length} sessions found. Deleting...`);
       await db.delete(sessions).where(eq(sessions.userId, userId));
     }
-    redirect("/api/auth/signin");
+    console.log("deleted current session(s)");
+    console.log("redirecting to signin to get fresh session");
   } catch (error) {
     console.log("didn't find token in database");
     console.log(error);
   }
-  return null;
+
+  redirect("/api/auth/signin");
 };
 
 export default getToken;
