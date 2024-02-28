@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import type { Track } from "../../types/SpotifyAPI";
 import { auth } from "@/server/auth";
 import getTopTracks from "./getTopTracks";
-import { refreshToken, getToken } from "./spotifyToken";
+import { deleteSiteSessionFromDB, getTokenFromDB } from "./spotifyToken";
 
 const tracks = async (): Promise<Track[] | "Unauthorized" | null> => {
   const session = (await auth())!;
@@ -10,7 +10,7 @@ const tracks = async (): Promise<Track[] | "Unauthorized" | null> => {
     // void fetch("http://localhost:3000/api/auth/signin");
     redirect("/api/auth/signin");
   }
-  const token = await getToken(session?.user?.id);
+  const token = await getTokenFromDB(session?.user?.id);
   if (!token) {
     console.log("need to sign in");
     redirect("/api/auth/signin");
@@ -36,7 +36,7 @@ const tracks = async (): Promise<Track[] | "Unauthorized" | null> => {
     console.error(error);
   }
 
-  await refreshToken(session?.user?.id);
+  await deleteSiteSessionFromDB(session?.user?.id);
   redirect("/api/auth/signin");
 };
 

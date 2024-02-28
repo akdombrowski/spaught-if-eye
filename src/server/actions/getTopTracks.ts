@@ -1,5 +1,5 @@
 import { type Track, type SpotifyAPIUserTopResponse } from "@/types/SpotifyAPI";
-import { getToken, refreshToken } from "./spotifyToken";
+import { getTokenFromDB, deleteSiteSessionFromDB } from "./spotifyToken";
 import { auth } from "@/server/auth";
 
 export default async function getTopTracks(): Promise<
@@ -7,16 +7,17 @@ export default async function getTopTracks(): Promise<
 > {
   let session = await auth();
   let user = session?.user;
-  let token = await getToken(user?.id);
+  let token = await getTokenFromDB(user?.id);
   if (!token) {
     console.log("no token found in gettoptracks");
-    await refreshToken(user?.id);
+    await deleteSiteSessionFromDB(user?.id);
 
     session = await auth();
     user = session?.user;
-    token = await getToken(user?.id);
+    token = await getTokenFromDB(user?.id);
     if (!token) {
       console.error("tried refreshing token but still can't get one");
+      throw new Error("can't get a token for some reason");
     }
   }
 

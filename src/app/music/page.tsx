@@ -2,7 +2,10 @@ import { Container, Grid } from "@mui/material";
 import SignOutButton from "@/components/SignOutButton";
 import SpotifyTool from "@/components/SpotifyTool";
 import { auth } from "@/server/auth";
-import { getToken, refreshToken } from "@/server/actions/spotifyToken";
+import {
+  getTokenFromDB,
+  deleteSiteSessionFromDB,
+} from "@/server/actions/spotifyToken";
 import getTopTracks from "../../server/actions/getTopTracks";
 import type { Track } from "@/types/SpotifyAPI";
 
