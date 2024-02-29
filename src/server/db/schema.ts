@@ -52,7 +52,6 @@ export const users = createTable("user", {
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
   sessions: many(sessions),
-  tokens: many(tokens),
 }));
 
 export const accounts = createTable(
@@ -80,27 +79,8 @@ export const accounts = createTable(
   }),
 );
 
-export const accountsRelations = relations(accounts, ({ one }) => ({
-  user: one(users, { fields: [accounts.userId], references: [users.id] }),
-}));
-
-export const tokens = createTable(
-  "token",
-  {
-    userId: varchar("userId", { length: 255 }).notNull(),
-    providerAccessToken: varchar("providerAccessToken", { length: 255 })
-      .notNull()
-      .primaryKey(),
-    provider: varchar("provider", { length: 255, enum: ["spotify"] }).notNull(),
-    expires: timestamp("expires", { mode: "date" }).notNull(),
-  },
-  (token) => ({
-    userIdIdx: index("token_userId_idx").on(token.userId),
-  }),
-);
-
-export const tokensRelations = relations(tokens, ({ one }) => ({
-  user: one(users, { fields: [tokens.userId], references: [users.id] }),
+export const accountsRelations = relations(accounts, ({ many }) => ({
+  sessions: many(sessions),
 }));
 
 export const sessions = createTable(

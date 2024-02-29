@@ -9,4 +9,6 @@ export default {
     uri: env.DATABASE_URL,
   },
   tablesFilter: ["spaught-if-eye_*"],
+  out: "./drizzle",
+  verbose: true,
 } satisfies Config;

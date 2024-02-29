@@ -2,7 +2,10 @@ import { redirect } from "next/navigation";
 import type { Track } from "../../types/SpotifyAPI";
 import { auth } from "@/server/auth";
 import getTopTracks from "./getTopTracks";
-import { deleteSiteSessionFromDB, getTokenFromDB } from "./spotifyToken";
+import {
+  deleteSiteSessionFromDB,
+  getTokenFromDB,
+} from "./spotifyTokens/spotifyToken";
 
 const tracks = async (): Promise<Track[] | "Unauthorized" | null> => {
   const session = (await auth())!;

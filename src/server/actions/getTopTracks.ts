@@ -1,5 +1,8 @@
 import { type Track, type SpotifyAPIUserTopResponse } from "@/types/SpotifyAPI";
-import { getTokenFromDB, deleteSiteSessionFromDB } from "./spotifyToken";
+import {
+  getTokenFromDB,
+  deleteSiteSessionFromDB,
+} from "./spotifyTokens/spotifyToken";
 import { auth } from "@/server/auth";
 
 export default async function getTopTracks(): Promise<

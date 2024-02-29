@@ -1,0 +1,301 @@
+import { relations, sql } from "drizzle-orm";
+import {
+  bigint,
+  index,
+  int,
+  mysqlTableCreator,
+  primaryKey,
+  text,
+  timestamp,
+  varchar,
+} from "drizzle-orm/mysql-core";
+import { type AdapterAccount } from "@auth/core/adapters";
+
+/**
+ * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
+ * database instance for multiple projects.
+ *
+ * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
+ */
+export const createTable = mysqlTableCreator(
+  (name) => `spaught-if-eye_${name}`,
+);
+
+export const posts = createTable(
+  "post",
+  {
+    id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
+    name: varchar("name", { length: 256 }),
+    createdById: varchar("createdById", { length: 255 }).notNull(),
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updatedAt").onUpdateNow(),
+  },
+  (example) => ({
+    createdByIdIdx: index("createdById_idx").on(example.createdById),
+    nameIndex: index("name_idx").on(example.name),
+  }),
+);
+
+export const users = createTable("user", {
+  id: varchar("id", { length: 255 }).notNull().primaryKey(),
+  name: varchar("name", { length: 255 }),
+  email: varchar("email", { length: 255 }).notNull(),
+  emailVerified: timestamp("emailVerified", {
+    mode: "date",
+    fsp: 3,
+  }).default(sql`CURRENT_TIMESTAMP(3)`),
+  image: varchar("image", { length: 255 }),
+});
+
+export const usersRelations = relations(users, ({ one, many }) => ({
+  account: one(accounts, {
+    fields: [users.id],
+    references: [accounts.userId],
+  }),
+  sessions: many(sessions),
+}));
+
+export const accounts = createTable(
+  "account",
+  {
+    userId: varchar("userId", { length: 255 }).notNull(),
+    type: varchar("type", { length: 255 })
+      .$type<AdapterAccount["type"]>()
+      .notNull(),
+    expires_at: int("expires_at"),
+    token_type: varchar("token_type", { length: 255 }),
+    scope: varchar("scope", { length: 255 }),
+    session_state: varchar("session_state", { length: 255 }),
+  },
+  (account) => ({
+    compoundKey: primaryKey({
+      columns: [account.type, account.expires_at],
+    }),
+    userIdIdx: index("accounts_userId_idx").on(account.userId),
+  }),
+);
+
+export const accountsRelations = relations(accounts, ({ one, many }) => ({
+  sessions: many(sessions),
+}));
+
+export const sessions = createTable(
+  "session",
+  {
+    userId: varchar("userId", { length: 255 }).notNull(),
+    sessionToken: varchar("sessionToken", { length: 255 }).notNull(),
+    access_token: varchar("accessToken", { length: 255 }).notNull(),
+    refresh_token: varchar("refreshToken", {
+      length: 255,
+    }).notNull(),
+    id_token: varchar("refreshToken", {
+      length: 255,
+    }),
+    provider: varchar("provider", { length: 255 }).notNull(),
+    providerAccountId: varchar("providerAccountId", { length: 255 }).notNull(),
+    expires: timestamp("expires", { mode: "date" }).notNull(),
+  },
+  (session) => ({
+    compoundKey: primaryKey({
+      columns: [
+        session.provider,
+        session.providerAccountId,
+        session.sessionToken,
+        session.access_token,
+        session.refresh_token,
+      ],
+    }),
+    userIdIdx: index("session_userId_idx").on(session.userId),
+  }),
+);
+
+export const sessionsRelations = relations(sessions, ({ one }) => ({
+  user: one(users, { fields: [sessions.userId], references: [users.id] }),
+  account: one(accounts, {
+    fields: [sessions.userId],
+    references: [accounts.userId],
+  }),
+}));
+
+export const verificationTokens = createTable(
+  "verificationToken",
+  {
+    identifier: varchar("identifier", { length: 255 }).notNull(),
+    token: varchar("token", { length: 255 }).notNull(),
+    expires: timestamp("expires", { mode: "date" }).notNull(),
+  },
+  (vt) => ({
+    compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
+  }),
+);
+
+import { relations, sql } from "drizzle-orm";
+import {
+  bigint,
+  index,
+  int,
+  mysqlTableCreator,
+  primaryKey,
+  text,
+  timestamp,
+  varchar,
+} from "drizzle-orm/mysql-core";
+import { type AdapterAccount } from "@auth/core/adapters";
+
+/**
+ * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
+ * database instance for multiple projects.
+ *
+ * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
+ */
+export const createTable = mysqlTableCreator(
+  (name) => `spaught-if-eye_${name}`,
+);
+
+export const posts = createTable(
+  "post",
+  {
+    id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
+    name: varchar("name", { length: 256 }),
+    createdById: varchar("createdById", { length: 255 }).notNull(),
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updatedAt").onUpdateNow(),
+  },
+  (example) => ({
+    createdByIdIdx: index("createdById_idx").on(example.createdById),
+    nameIndex: index("name_idx").on(example.name),
+  }),
+);
+
+export const users = createTable("user", {
+  id: varchar("id", { length: 255 }).notNull().primaryKey(),
+  name: varchar("name", { length: 255 }),
+  email: varchar("email", { length: 255 }).notNull(),
+  emailVerified: timestamp("emailVerified", {
+    mode: "date",
+    fsp: 3,
+  }).default(sql`CURRENT_TIMESTAMP(3)`),
+  image: varchar("image", { length: 255 }),
+});
+
+export const usersRelations = relations(users, ({ one, many }) => ({
+  account: one(accounts, {
+    fields: [users.id],
+    references: [accounts.userId],
+  }),
+  sessions: many(sessions),
+  tokens: many(tokens),
+}));
+
+export const accounts = createTable(
+  "account",
+  {
+    userId: varchar("userId", { length: 255 }).notNull(),
+    type: varchar("type", { length: 255 })
+      .$type<AdapterAccount["type"]>()
+      .notNull(),
+    provider: varchar("provider", { length: 255 }).notNull(),
+    providerAccountId: varchar("providerAccountId", { length: 255 }).notNull(),
+    refresh_token: text("refresh_token"),
+    access_token: text("access_token"),
+    expires_at: int("expires_at"),
+    token_type: varchar("token_type", { length: 255 }),
+    scope: varchar("scope", { length: 255 }),
+    id_token: text("id_token"),
+    session_state: varchar("session_state", { length: 255 }),
+  },
+  (account) => ({
+    compoundKey: primaryKey({
+      columns: [account.provider, account.providerAccountId],
+    }),
+    userIdIdx: index("accounts_userId_idx").on(account.userId),
+  }),
+);
+
+export const accountsRelations = relations(accounts, ({ one, many }) => ({
+  userId: one(users, { fields: [accounts.userId], references: [users.id] }),
+  sessions: many(sessions),
+  tokens: many(tokens),
+}));
+
+export const tokens = createTable(
+  "token",
+  {
+    userId: varchar("userId", { length: 255 }).notNull(),
+    sessionToken: text("session_token"),
+    accessToken: varchar("accessToken", { length: 255 }).notNull(),
+    refreshToken: varchar("refreshToken", {
+      length: 255,
+    }).notNull(),
+    provider: varchar("provider", { length: 255, enum: ["spotify"] }).notNull(),
+    expires: timestamp("expires", { mode: "date" }).notNull(),
+  },
+  (token) => ({
+    compoundKey: primaryKey({
+      columns: [token.accessToken, token.refreshToken],
+    }),
+    userIdIdx: index("token_userId_idx").on(token.userId),
+  }),
+);
+
+export const tokensRelations = relations(tokens, ({ one }) => ({
+  user: one(users, { fields: [tokens.userId], references: [users.id] }),
+  account: one(accounts, {
+    fields: [tokens.userId],
+    references: [accounts.userId],
+  }),
+  sessionToken: one(sessions, {
+    fields: [tokens.sessionToken],
+    references: [sessions.sessionToken],
+  }),
+}));
+
+export const sessions = createTable(
+  "session",
+  {
+    userId: varchar("userId", { length: 255 }).notNull(),
+    sessionToken: varchar("sessionToken", { length: 255 })
+      .notNull()
+      .primaryKey(),
+    accessToken: varchar("accessToken", { length: 255 }).notNull(),
+    refreshToken: varchar("refreshToken", {
+      length: 255,
+    }).notNull(),
+    expires: timestamp("expires", { mode: "date" }).notNull(),
+  },
+  (session) => ({
+    userIdIdx: index("session_userId_idx").on(session.userId),
+  }),
+);
+
+export const sessionsRelations = relations(sessions, ({ one }) => ({
+  user: one(users, { fields: [sessions.userId], references: [users.id] }),
+  account: one(accounts, {
+    fields: [sessions.userId],
+    references: [accounts.userId],
+  }),
+  accessToken: one(tokens, {
+    fields: [sessions.accessToken],
+    references: [tokens.accessToken],
+  }),
+  refreshToken: one(tokens, {
+    fields: [sessions.refreshToken],
+    references: [tokens.refreshToken],
+  }),
+}));
+
+export const verificationTokens = createTable(
+  "verificationToken",
+  {
+    identifier: varchar("identifier", { length: 255 }).notNull(),
+    token: varchar("token", { length: 255 }).notNull(),
+    expires: timestamp("expires", { mode: "date" }).notNull(),
+  },
+  (vt) => ({
+    compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
+  }),
+);
