@@ -79,8 +79,8 @@ export const accounts = createTable(
   }),
 );
 
-export const accountsRelations = relations(accounts, ({ many }) => ({
-  sessions: many(sessions),
+export const accountsRelations = relations(accounts, ({ one }) => ({
+  sessions: one(sessions),
 }));
 
 export const sessions = createTable(

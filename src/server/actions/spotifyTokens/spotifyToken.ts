@@ -1,3 +1,4 @@
+import { refreshSpotifyToken } from "./spotifyToken";
 import { eq } from "drizzle-orm";
 import { Account, type User } from "next-auth";
 import { db } from "@/server/db";
@@ -87,6 +88,7 @@ export const deleteRefreshAndAccessTokensFromUserIdAccount = async (
       userId = await getUserIdFromSession();
     }
 
+    // all of userid's accts where there are tokens
     const acct = await db.query.accounts.findMany({
       columns: {
         userId: true,
@@ -122,7 +124,7 @@ export const refreshSpotifyToken = async (userId: User["id"] | null) => {
       userId = await getUserIdFromSession();
     }
 
-    const acct = await db.query.accounts.findMany({
+    const acct = await db.query.accounts.findFirst({
       columns: {
         userId: true,
         refresh_token: true,
@@ -132,8 +134,20 @@ export const refreshSpotifyToken = async (userId: User["id"] | null) => {
 
     if (acct.length) {
       console.log(
-        `${acct.length} accounts found. Deleting refresh and access tokens on this account...`,
+        `${
+          acct.length
+        } accounts found. Refreshing refresh and access tokens on this account ${JSON.stringify(
+          acct,
+        )}...`,
       );
+      console.log(
+        `${
+          acct.refresh_token
+        } accounts found. Refreshing refresh and access tokens on this account ${JSON.stringify(
+          acct,
+        )}...`,
+      );
+
       await db
         .update(accounts)
         .set({ refresh_token: "", access_token: "" })
