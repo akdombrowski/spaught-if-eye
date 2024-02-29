@@ -132,21 +132,19 @@ export const refreshSpotifyToken = async (userId: User["id"] | null) => {
       where: eq(accounts.userId, userId),
     });
 
-    if (acct.length) {
+    if (acct) {
       console.log(
-        `${
-          acct.length
-        } accounts found. Refreshing refresh and access tokens on this account ${JSON.stringify(
+        `account found. Refreshing refresh and access tokens on this account ${JSON.stringify(
           acct,
         )}...`,
       );
-      console.log(
-        `${
-          acct.refresh_token
-        } accounts found. Refreshing refresh and access tokens on this account ${JSON.stringify(
-          acct,
-        )}...`,
-      );
+      const refreshToken = acct.refresh_token;
+      console.log(`using refresh token: '${refreshToken}'`);
+      if (!refreshToken) {
+        throw new Error(
+          `no refresh token avail. have the user re-auth. for userId: ${userId} `,
+        );
+      }
 
       await db
         .update(accounts)
@@ -156,7 +154,55 @@ export const refreshSpotifyToken = async (userId: User["id"] | null) => {
     console.log(
       `Success.\n deleted ${userId}'s account spotify refresh and access tokens session(s)`,
     );
-  } catch (error) {}
+  } catch (error) {
+    return false;
+  }
+};
+
+export interface RefreshTokenAPIResponse {
+  access_token: string;
+  token_type: string;
+  expires_in: number;
+  refresh_token: string;
+  scope: string;
+}
+
+export const useRefreshToken = async (userId: string, refreshToken: string) => {
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+  myHeaders.append(
+    "Authorization",
+    "Basic NzM0ZWQzNGI1NjQwNDNhNGIxYTIwYzhjMzFlNjIzNWE6N2ZhNDUyYzVlMGQwNGExMGI4MTBmZjU4MGVlMGRmYWI=",
+  );
+
+  const requestOptions: RequestInit = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+    cache: "no-store",
+  };
+
+  try {
+    const url = `https://accounts.spotify.com/api/token?grant_type=refresh_token&refresh_token=${refreshToken}`;
+    const res = await fetch(url, requestOptions);
+    if (!res.ok) {
+      throw new Error("failed to use refresh token at spotify api", {
+        cause: {
+          userId,
+          refreshToken,
+          res,
+        },
+      });
+    }
+    const result = (await res.json()) as RefreshTokenAPIResponse;
+    console.log("refreshing token response");
+    console.log(result);
+
+    const { access_token, refresh_token, scope, expires_in } = result;
+    return { access_token, refresh_token, scope, expires_in };
+  } catch (error) {
+    throw new Error("couldn't refresh", { cause: error });
+  }
 };
 
 export default getTokenFromDB;
