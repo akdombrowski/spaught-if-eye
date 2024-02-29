@@ -68,6 +68,7 @@ export const authConfig: NextAuthConfig = {
         console.log("***************");
         console.log();
       }
+
       // const userId = account?.userId;
       // const accessToken = account?.access_token;
       // if (userId && accessToken) {
@@ -111,13 +112,15 @@ export const authConfig: NextAuthConfig = {
       token,
     }: {
       session: Session;
-      user: User;
-      token: JWT;
+      user: User; // only returned if using database strategy (not JWT)
+      token: JWT; // only returned if using JWT strategy (not database)
     }): Promise<Session> => {
       const sesh = {
         ...session,
         user: { ...session.user, id: user.id },
       } as Session;
+      //
+
       if (DEBUG_CALLBACKS) {
         console.log();
         console.log("****************");
@@ -132,6 +135,7 @@ export const authConfig: NextAuthConfig = {
         console.log("****************");
         console.log();
       }
+
       return sesh;
     },
   },
