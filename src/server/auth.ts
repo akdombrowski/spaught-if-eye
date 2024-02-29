@@ -5,9 +5,12 @@ import NextAuth from "next-auth";
 import SpotifyProvider from "next-auth/providers/spotify";
 // import GithubProvider from "next-auth/providers/github";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { env } from "@/env";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { db } from "@/server/db";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { createTable } from "@/server/db/schema";
 
 const DEBUG_CALLBACKS = false;
@@ -42,6 +45,7 @@ export const authConfig: NextAuthConfig = {
   session: {
     maxAge: 3000,
     updateAge: 3000,
+    strategy: "jwt",
   },
   callbacks: {
     signIn: async ({ user, account, profile, email, credentials }) => {
@@ -97,10 +101,17 @@ export const authConfig: NextAuthConfig = {
 
       return true;
     },
+    jwt: async ({ token, account }) => {
+      if (account) {
+        token.accessToken = account.access_token;
+      }
+
+      return token;
+    },
     session: async ({
       session,
-      user,
-      token,
+      user, // only returned if using database strategy (not JWT)
+      token, // only returned if using JWT strategy (not database)
     }: {
       session: Session;
       user: User; // only returned if using database strategy (not JWT)
@@ -108,7 +119,7 @@ export const authConfig: NextAuthConfig = {
     }): Promise<Session> => {
       const sesh = {
         ...session,
-        user: { ...session.user, id: user.id },
+        user: { ...session.user, id: token.id },
       } as Session;
       //
 
@@ -133,7 +144,7 @@ export const authConfig: NextAuthConfig = {
   //
   //
   //
-  adapter: DrizzleAdapter(db, createTable),
+  // adapter: DrizzleAdapter(db, createTable),
   providers: [
     // GithubProvider({
     //   clientId: env.GITHUB_CLIENT_ID,
@@ -142,13 +153,13 @@ export const authConfig: NextAuthConfig = {
     SpotifyProvider({
       clientId: env.SPOTIFY_CLIENT_ID,
       clientSecret: env.SPOTIFY_CLIENT_SECRET,
-      account: (account) => {
-        return {
-          access_token: account.access_token,
-          expires_at: account.expires_at,
-          refresh_token: account.refresh_token,
-        };
-      },
+      // account: (account) => {
+      //   return {
+      //     access_token: account.access_token,
+      //     expires_at: account.expires_at,
+      //     refresh_token: account.refresh_token,
+      //   };
+      // },
     }),
     /**
      * ...add more providers here.
