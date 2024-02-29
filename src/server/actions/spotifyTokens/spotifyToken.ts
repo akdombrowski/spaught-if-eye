@@ -79,35 +79,6 @@ export const getToken = async (userId: User["id"] | null): Promise<string> => {
   }
 };
 
-export const deleteSiteSessionFromDB = async (
-  userId: User["id"] | null,
-): Promise<string | null> => {
-  if (!userId) {
-    try {
-      userId = await getUserIdFromSession();
-    } catch (err) {
-      throw new Error("couldn't get userId via auth session", { cause: err });
-    }
-  }
-
-  try {
-    const usersSessions = await db.query.sessions.findMany({
-      where: eq(sessions.userId, userId),
-    });
-    if (usersSessions.length) {
-      console.log(`${usersSessions.length} sessions found. Deleting...`);
-      await db.delete(sessions).where(eq(sessions.userId, userId));
-    }
-    console.log("deleted current session(s)");
-    console.log("redirecting to signin to get fresh session");
-  } catch (error) {
-    console.log("didn't find token in database");
-    console.log(error);
-  }
-
-  redirect("/api/auth/signin");
-};
-
 export const deleteRefreshAndAccessTokensFromUserIdAccount = async (
   userId: User["id"] | null,
 ) => {

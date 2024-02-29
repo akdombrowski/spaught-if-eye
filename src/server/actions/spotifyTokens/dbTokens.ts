@@ -1,11 +1,6 @@
 import { eq } from "drizzle-orm";
-import { Account, type User } from "next-auth";
 import { db } from "@/server/db";
-import { accounts, users, sessions } from "@/server/db/schema";
-import { redirect } from "next/navigation";
-import { auth } from "@/server/auth";
-
-import { getUserIdFromSession } from "@/server/actions/spotifyTokens/spotifyToken";
+import { accounts, sessions } from "@/server/db/schema";
 
 export enum ErrorFetchTokenFromDB {
   noAcct = "NO_ACCT_FOUND",
@@ -38,13 +33,8 @@ export const getTokenFromDB = async (
   }
 };
 
-export const fetchSpotifyRefreshTokenFromDB = async (
-  userId: User["id"] | null,
-) => {
+export const fetchSpotifyRefreshTokenFromDB = async (userId: string) => {
   try {
-    if (!userId) {
-      userId = await getUserIdFromSession();
-    }
     const acct = await db.query.accounts.findMany({
       where: eq(accounts.userId, userId),
     });
@@ -70,10 +60,6 @@ export const fetchSpotifyRefreshTokenFromDB = async (
 
 export async function resetTokens(userId: string) {
   try {
-    if (!userId) {
-      userId = await getUserIdFromSession();
-    }
-
     await db
       .update(accounts)
       .set({
@@ -88,3 +74,45 @@ export async function resetTokens(userId: string) {
     return false;
   }
 }
+
+export async function resetSession(userId: string) {
+  try {
+    const usersSessions = await db.query.sessions.findMany({
+      where: eq(sessions.userId, userId),
+    });
+    if (usersSessions.length) {
+      console.log(`${usersSessions.length} sessions found. Resetting...`);
+      await db
+        .update(sessions)
+        .set({
+          sessionToken: undefined,
+          expires: undefined,
+        })
+        .where(eq(accounts.userId, userId));
+    }
+    console.log(`reset user's ${userId} session(s)`);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+export const deleteSiteSessionFromDB = async (
+  userId: string,
+): Promise<boolean> => {
+  try {
+    const usersSessions = await db.query.sessions.findMany({
+      where: eq(sessions.userId, userId),
+    });
+    if (usersSessions.length) {
+      console.log(`${usersSessions.length} sessions found. Deleting...`);
+      await db.delete(sessions).where(eq(sessions.userId, userId));
+    }
+    console.log(`deleted user's ${userId} session(s)`);
+    return true;
+  } catch (error) {
+    console.log("didn't find token in database");
+    console.log(error);
+  }
+  return false;
+};
