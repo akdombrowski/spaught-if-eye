@@ -1,13 +1,20 @@
-import { refreshSpotifyToken } from "./spotifyToken";
 import { eq } from "drizzle-orm";
-import { Account, type User } from "next-auth";
+import type { User } from "next-auth";
 import { db } from "@/server/db";
-import { accounts, users, sessions } from "../../db/schema";
+import { accounts } from "@/server/db/schema";
 import { redirect } from "next/navigation";
 import { auth } from "@/server/auth";
 import { getTokenFromDB } from "@/server/actions/spotifyTokens";
 
 import { ErrorFetchTokenFromDB, resetTokens } from "./dbTokens";
+
+export interface SpotifyRefreshTokenAPIResponse {
+  access_token: string;
+  token_type: string;
+  expires_in: number;
+  refresh_token: string;
+  scope: string;
+}
 
 export const getUserIdFromSession = async (): Promise<string> => {
   const session = await auth();
@@ -118,7 +125,9 @@ export const deleteRefreshAndAccessTokensFromUserIdAccount = async (
   }
 };
 
-export const refreshSpotifyToken = async (userId: User["id"] | null) => {
+export const refreshSpotifyTokenWithSpotifyAPI = async (
+  userId: User["id"],
+): Promise<boolean> => {
   try {
     if (!userId) {
       userId = await getUserIdFromSession();
@@ -146,6 +155,9 @@ export const refreshSpotifyToken = async (userId: User["id"] | null) => {
         );
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const _res = await spotifyRefreshToken(userId, refreshToken);
+
       await db
         .update(accounts)
         .set({ refresh_token: "", access_token: "" })
@@ -154,20 +166,18 @@ export const refreshSpotifyToken = async (userId: User["id"] | null) => {
     console.log(
       `Success.\n deleted ${userId}'s account spotify refresh and access tokens session(s)`,
     );
+    return true;
   } catch (error) {
+    console.error(error);
+  } finally {
     return false;
   }
 };
 
-export interface RefreshTokenAPIResponse {
-  access_token: string;
-  token_type: string;
-  expires_in: number;
-  refresh_token: string;
-  scope: string;
-}
-
-export const useRefreshToken = async (userId: string, refreshToken: string) => {
+export const spotifyRefreshToken = async (
+  userId: string,
+  refreshToken: string,
+) => {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
   myHeaders.append(
@@ -194,7 +204,7 @@ export const useRefreshToken = async (userId: string, refreshToken: string) => {
         },
       });
     }
-    const result = (await res.json()) as RefreshTokenAPIResponse;
+    const result = (await res.json()) as SpotifyRefreshTokenAPIResponse;
     console.log("refreshing token response");
     console.log(result);
 
