@@ -6,9 +6,11 @@ export default {
   schema: "./src/server/db/schema.ts",
   driver: "mysql2",
   dbCredentials: {
-    uri: env.DATABASE_URL,
+    uri: env.DEV_DATABASE_URL,
+    database: "moozack dev", // db: moozack, branch: dev
   },
   tablesFilter: ["spaught-if-eye_*"],
   out: "./drizzle",
+
   verbose: true,
 } satisfies Config;

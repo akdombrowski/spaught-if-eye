@@ -1,23 +1,14 @@
 import type { JWT } from "next-auth/jwt";
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { eq, lt, gte, ne } from "drizzle-orm";
-import type {
-  NextAuthConfig,
-  DefaultSession,
-  Session,
-  User,
-  NextAuthResult,
-} from "next-auth";
-
+import type { NextAuthConfig, DefaultSession, Session, User } from "next-auth";
 import NextAuth from "next-auth";
 // import DiscordProvider from "next-auth/providers/discord";
 import SpotifyProvider from "next-auth/providers/spotify";
 // import GithubProvider from "next-auth/providers/github";
 
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { env } from "@/env";
 import { db } from "@/server/db";
-import { createTable, users, tokens } from "@/server/db/schema";
-import { NextRequest } from "next/server";
+import { createTable } from "@/server/db/schema";
 
 const DEBUG_CALLBACKS = false;
 
@@ -139,6 +130,9 @@ export const authConfig: NextAuthConfig = {
       return sesh;
     },
   },
+  //
+  //
+  //
   adapter: DrizzleAdapter(db, createTable),
   providers: [
     // GithubProvider({
@@ -148,6 +142,13 @@ export const authConfig: NextAuthConfig = {
     SpotifyProvider({
       clientId: env.SPOTIFY_CLIENT_ID,
       clientSecret: env.SPOTIFY_CLIENT_SECRET,
+      account: (account) => {
+        return {
+          access_token: account.access_token,
+          expires_at: account.expires_at,
+          refresh_token: account.refresh_token,
+        };
+      },
     }),
     /**
      * ...add more providers here.

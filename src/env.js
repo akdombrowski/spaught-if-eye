@@ -7,7 +7,10 @@ export const env = createEnv({
    * can ensure the app isn't built with invalid env vars.
    */
   server: {
-    DATABASE_URL: z
+    DATABASE_HOST: z.string(),
+    DEV_DATABASE_USERNAME: z.string(),
+    DEV_DATABASE_PASSWORD: z.string(),
+    DEV_DATABASE_URL: z
       .string()
       .url()
       .refine(
@@ -50,7 +53,10 @@ export const env = createEnv({
    * runtimes (e.g. middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
-    DATABASE_URL: process.env.DATABASE_URL,
+    DATABASE_HOST: process.env.DATABASE_HOST,
+    DEV_DATABASE_URL: process.env.DEV_DATABASE_URL,
+    DEV_DATABASE_USERNAME: process.env.DEV_DATABASE_USERNAME,
+    DEV_DATABASE_PASSWORD: process.env.DEV_DATABASE_PASSWORD,
     NODE_ENV: process.env.NODE_ENV,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     // NEXTAUTH_URL: process.env.NEXTAUTH_URL,
