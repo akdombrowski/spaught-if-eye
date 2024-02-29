@@ -1,31 +1,16 @@
 import { type Track, type SpotifyAPIUserTopResponse } from "@/types/SpotifyAPI";
-import {
-  getTokenFromDB,
-  deleteSiteSessionFromDB,
-} from "./spotifyTokens/spotifyToken";
 import { auth } from "@/server/auth";
 
-export default async function getTopTracks(): Promise<
-  Track[] | "Unauthorized" | null
-> {
-  let session = await auth();
-  let user = session?.user;
-  let token = await getTokenFromDB(user?.id);
-  if (!token) {
-    console.log("no token found in gettoptracks");
-    await deleteSiteSessionFromDB(user?.id);
+export default async function getTopTracks(): Promise<Track[]> {
+  const session = await auth();
+  const token = session?.accessToken as string;
 
-    session = await auth();
-    user = session?.user;
-    token = await getTokenFromDB(user?.id);
-    if (!token) {
-      console.error("tried refreshing token but still can't get one");
-      throw new Error("can't get a token for some reason");
-    }
+  if (!token) {
+    throw new Error("No token");
   }
 
   const headers = new Headers();
-  headers.append("Authorization", "Bearer " + token);
+  headers.append("Authorization", `Bearer ${token}`);
   const res = await fetch("https://api.spotify.com/v1/me/top/tracks");
 
   if (res.ok) {
@@ -37,7 +22,7 @@ export default async function getTopTracks(): Promise<
     const topTracks = topTracksRes?.items;
     if (!topTracks) {
       console.error("no tracks");
-      return null;
+      throw new Error("No tracks");
     }
 
     console.log("spotify api response topTracks");
@@ -46,7 +31,9 @@ export default async function getTopTracks(): Promise<
     if (topTracks.length) {
       if (topTracks[0]?.type === "album") {
         console.error("Got albums instead of tracks back");
-        return null;
+        throw new Error("Got albums instead of tracks back", {
+          cause: topTracks,
+        });
       }
     }
     return topTracks as Track[];
@@ -54,6 +41,8 @@ export default async function getTopTracks(): Promise<
     console.error("failed to fetch top tracks from spotify api");
     console.error("res.statusText");
     console.error(res.statusText);
-    return "Unauthorized";
+    throw new Error("Unauthorized to use spotify api to fetch top tracks", {
+      cause: res,
+    });
   }
 }

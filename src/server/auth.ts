@@ -23,6 +23,7 @@ const DEBUG_CALLBACKS = false;
  */
 declare module "next-auth" {
   interface Session extends DefaultSession {
+    accessToken: string | JWT;
     user: {
       id: string;
       // ...other properties
@@ -102,6 +103,21 @@ export const authConfig: NextAuthConfig = {
       return true;
     },
     jwt: async ({ token, account }) => {
+      if (DEBUG_CALLBACKS) {
+        console.log();
+        console.log("****************");
+        console.log("================");
+        console.log("JWT CALLBACK");
+        console.log("================");
+        console.log();
+        console.log("account:", account);
+        console.log();
+        console.log("token:", token);
+        console.log();
+        console.log("****************");
+        console.log();
+      }
+
       if (account) {
         token.accessToken = account.access_token;
       }
@@ -117,9 +133,13 @@ export const authConfig: NextAuthConfig = {
       user: User; // only returned if using database strategy (not JWT)
       token: JWT; // only returned if using JWT strategy (not database)
     }): Promise<Session> => {
+      // const sesh = {
+      //   ...session,
+      //   user: { ...session.user, id: token.id },
+      // } as Session;
       const sesh = {
         ...session,
-        user: { ...session.user, id: token.id },
+        token: token.accessToken,
       } as Session;
       //
 

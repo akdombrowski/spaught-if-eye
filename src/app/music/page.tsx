@@ -2,16 +2,35 @@ import { Container, Grid } from "@mui/material";
 import SignOutButton from "@/components/SignOutButton";
 import SpotifyTool from "@/components/SpotifyTool";
 import { auth } from "@/server/auth";
-import {
-  getTokenFromDB,
-  deleteSiteSessionFromDB,
-} from "@/server/actions/spotifyToken";
 import getTopTracks from "../../server/actions/getTopTracks";
-import type { Track } from "@/types/SpotifyAPI";
+import { redirect } from "next/navigation";
 
 const session = await auth();
-const topTracks = (await getTopTracks()) as Track[];
-export default function Music(_props) {
+
+const red = async () => {
+  try {
+    const tracks = await getTopTracks();
+    console.log();
+    console.log();
+    console.log();
+    console.log("tracks");
+    console.log(tracks);
+    console.log();
+    console.log();
+    console.log();
+    return tracks;
+  } catch (error) {
+    console.error("couldn't get tracks:", error);
+    return null;
+  }
+};
+
+export default async function Music(_props) {
+  const topTracks = await red();
+
+  if (!topTracks) {
+    redirect("/api/auth/signin");
+  }
   return (
     <Container maxWidth={false}>
       <Grid container spacing={2}>
@@ -20,7 +39,7 @@ export default function Music(_props) {
           {session?.user && <code>{JSON.stringify(session.user)}</code>}
         </Grid>
         <Grid container xs={12}>
-          <SpotifyTool topTracks={topTracks} />
+          {topTracks?.length && <SpotifyTool topTracks={topTracks} />}
         </Grid>
         <Grid xs={12}>
           <SignOutButton />
