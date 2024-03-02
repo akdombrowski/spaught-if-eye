@@ -6,19 +6,23 @@ import { auth } from "@/server/auth";
 import getTopTracks from "@/server/actions/getTopTracks";
 import { redirect } from "next/navigation";
 
+const DEBUG = false;
+
 const session = await auth();
 
 const red = async () => {
   try {
     const tracks = await getTopTracks();
-    console.log();
-    console.log();
-    console.log();
-    console.log("tracks");
-    console.log(tracks);
-    console.log();
-    console.log();
-    console.log();
+    if (DEBUG) {
+      // console.log();
+      // console.log();
+      // console.log();
+      // console.log("tracks");
+      // console.log(tracks);
+      // console.log();
+      // console.log();
+      // console.log();
+    }
     return tracks;
   } catch (error) {
     console.error("couldn't get tracks:", error);
