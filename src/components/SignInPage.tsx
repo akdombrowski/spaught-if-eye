@@ -40,7 +40,7 @@ export default function SignInPage() {
         justifyContent="center"
         alignItems="center">
         {/* START Grid Container for form side components*/}
-        <Grid container xs={12} spacing={2} columns={12}>
+        <Grid container spacing={2} columns={12}>
           {/* Avatar  */}
           <Grid
             xs={12}

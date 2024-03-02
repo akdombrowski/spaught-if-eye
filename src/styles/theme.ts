@@ -53,6 +53,7 @@ const getDesignTokens = (mode: PaletteMode) => ({
             contrastText: "#f3e28f",
           },
           background: {
+            main: "#080708",
             default: "#080708",
           },
           text: {
@@ -67,6 +68,30 @@ const getDesignTokens = (mode: PaletteMode) => ({
 });
 
 export const themeOptions: ThemeOptions = getDesignTokens("dark");
-export const theme = createTheme(themeOptions);
+// export const theme = createTheme(themeOptions);
+
+export const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#badefe",
+      contrastText: "#ec562c",
+    },
+    secondary: {
+      main: "#001fab",
+      contrastText: "#f3e28f",
+    },
+    background: {
+      // main: "#080708",
+      default: "#080708",
+    },
+    text: {
+      primary: "#cae9ff",
+    },
+    error: {
+      main: "#b86f52",
+    },
+    divider: "#4c0000",
+  },
+});
 
 export default theme;

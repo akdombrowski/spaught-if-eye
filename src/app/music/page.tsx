@@ -1,4 +1,5 @@
-import { Container, Grid } from "@mui/material";
+import { Container } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
 import SignOutButton from "@/components/SignOutButton";
 import SpotifyTool from "@/components/SpotifyTool";
 import { auth } from "@/server/auth";
@@ -38,7 +39,7 @@ export default async function Music(_props) {
           <h3>live session found</h3>
           {session?.user && <code>{JSON.stringify(session.user)}</code>}
         </Grid>
-        <Grid container xs={12}>
+        <Grid container>
           {topTracks?.length && <SpotifyTool topTracks={topTracks} />}
         </Grid>
         <Grid xs={12}>
