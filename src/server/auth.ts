@@ -1,8 +1,16 @@
-import type { JWT } from "next-auth/jwt";
-import type { NextAuthConfig, DefaultSession, Session, User } from "next-auth";
+import type { JWT } from "@auth/core/jwt";
+import type {
+  NextAuthConfig,
+  DefaultSession,
+  Session,
+  User,
+  Account,
+  Profile,
+} from "next-auth";
 import NextAuth from "next-auth";
 // import SpotifyProvider from "next-auth/providers/spotify";
 import SpotifyProvider from "@auth/core/providers/spotify";
+import type { SpotifyProfile } from "@auth/core/providers/spotify";
 // import DiscordProvider from "next-auth/providers/discord";
 // import GithubProvider from "next-auth/providers/github";
 
@@ -24,7 +32,16 @@ const DEBUG_CALLBACKS = false;
  */
 declare module "next-auth" {
   interface Session extends DefaultSession {
-    accessToken: string | JWT;
+    accessToken: string | undefined | JWT;
+    accessTokenUpdatedAt: number | string;
+    user: {
+      id: string;
+      // ...other properties
+      // role: UserRole;
+    } & DefaultSession["user"];
+  }
+  interface Profile extends SpotifyProfile {
+    accessToken: string | undefined | JWT;
     accessTokenUpdatedAt: number | string;
     user: {
       id: string;
@@ -38,10 +55,13 @@ declare module "next-auth" {
   //   // role: UserRole;
   // }
 }
-declare module "next-auth/JWT" {
+declare module "@auth/core/jwt" {
   interface JWT extends DefaultJWT {
-    accessToken: string | JWT;
+    accessToken: string | undefined | JWT;
+    refreshToken: string | undefined | JWT;
     accessTokenUpdatedAt: number | string;
+    refreshTokenUpdatedAt: number | string;
+    displayName: string;
   }
 }
 
@@ -113,7 +133,20 @@ export const authConfig: NextAuthConfig = {
 
       return true;
     },
-    jwt: async ({ token, account }) => {
+    // jwt: async (props) => {
+    //   const account = props.account;
+    //   const token = props.token;
+    jwt: async ({
+      token,
+      account,
+      user,
+      profile,
+    }: {
+      token: JWT;
+      account: Account | null;
+      user: User | null;
+      profile?: Profile | undefined;
+    }) => {
       if (DEBUG_CALLBACKS) {
         console.log();
         console.log("****************");
@@ -129,13 +162,31 @@ export const authConfig: NextAuthConfig = {
         console.log();
       }
 
+      /**
+       * User, Profile, and Account appear only when signing in, not when
+       * 'refreshing the session'
+       */
+      if (user) {
+        // right now user has id, name, email (*can't trust*), image
+      }
+
+      if (profile) {
+        token.displayName = profile.display_name;
+      }
+
       if (account) {
         token.accessToken = account.access_token;
         token.accessTokenUpdatedAt = Date();
+
+        token.refreshToken = account.refresh_token;
+        token.refreshTokenUpdatedAt = Date();
       }
 
       return token;
     },
+    // session: async (props) => {
+    //   const session = props.session;
+    //   const token = props.token;
     session: async ({
       session,
       user, // only returned if using database strategy (not JWT)
@@ -145,14 +196,12 @@ export const authConfig: NextAuthConfig = {
       user: User; // only returned if using database strategy (not JWT)
       token: JWT; // only returned if using JWT strategy (not database)
     }): Promise<Session> => {
-      // const sesh = {
-      //   ...session,
-      //   user: { ...session.user, id: token.id },
-      // } as Session;
       const sesh = {
         ...session,
         accessToken: token.accessToken,
         accessTokenUpdatedAt: Date(),
+        refreshToken: token.accessToken,
+        refreshTokenUpdatedAt: Date(),
       } as Session;
       //
 
@@ -162,6 +211,8 @@ export const authConfig: NextAuthConfig = {
         console.log("================");
         console.log("SESSION CALLBACK");
         console.log("================");
+        console.log();
+        // console.log("props:", props);
         console.log();
         console.log("session:", session);
         console.log();

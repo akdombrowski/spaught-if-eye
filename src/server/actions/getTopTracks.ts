@@ -1,5 +1,8 @@
 import { type Track, type SpotifyAPIUserTopResponse } from "@/types/SpotifyAPI";
 import { auth } from "@/server/auth";
+import type { Session } from "next-auth";
+
+const DEBUG = false;
 
 export default async function getTopTracks(): Promise<Track[]> {
   const session = await auth();
@@ -19,8 +22,10 @@ export default async function getTopTracks(): Promise<Track[]> {
   if (res.ok) {
     const topTracksRes = (await res.json()) as SpotifyAPIUserTopResponse;
 
-    console.log("spotify api response");
-    console.log(topTracksRes);
+    if (DEBUG) {
+      console.log("spotify api response");
+      console.log(topTracksRes);
+    }
 
     const topTracks = topTracksRes?.items;
     if (!topTracks) {
@@ -28,8 +33,10 @@ export default async function getTopTracks(): Promise<Track[]> {
       throw new Error("No tracks");
     }
 
-    console.log("spotify api response topTracks");
-    console.log(topTracks);
+    if (DEBUG) {
+      console.log("spotify api response topTracks");
+      console.log(topTracks);
+    }
 
     if (topTracks.length) {
       if (topTracks[0]?.type === "album") {
@@ -44,10 +51,6 @@ export default async function getTopTracks(): Promise<Track[]> {
     const status = res.status;
     const statusText = res.statusText;
     console.error("failed to fetch top tracks from spotify api");
-    console.error("status");
-    console.error(status);
-    console.error("statusText");
-    console.error(statusText);
     throw new Error("Unauthorized to use spotify api to fetch top tracks", {
       cause: { accessToken, accessTokenUpdatedAt, status, statusText },
     });
