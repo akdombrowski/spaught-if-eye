@@ -3,15 +3,18 @@ import { auth } from "@/server/auth";
 
 export default async function getTopTracks(): Promise<Track[]> {
   const session = await auth();
-  const token = session?.accessToken as string;
+  const accessToken = session?.accessToken as string;
+  const accessTokenUpdatedAt = session?.accessTokenUpdatedAt as number;
 
-  if (!token) {
+  if (!accessToken) {
     throw new Error("No token");
   }
 
   const headers = new Headers();
-  headers.append("Authorization", `Bearer ${token}`);
-  const res = await fetch("https://api.spotify.com/v1/me/top/tracks");
+  headers.append("Authorization", `Bearer ${accessToken}`);
+  const res = await fetch("https://api.spotify.com/v1/me/top/tracks", {
+    headers,
+  });
 
   if (res.ok) {
     const topTracksRes = (await res.json()) as SpotifyAPIUserTopResponse;
@@ -38,11 +41,15 @@ export default async function getTopTracks(): Promise<Track[]> {
     }
     return topTracks as Track[];
   } else {
+    const status = res.status;
+    const statusText = res.statusText;
     console.error("failed to fetch top tracks from spotify api");
-    console.error("res.statusText");
-    console.error(res.statusText);
+    console.error("status");
+    console.error(status);
+    console.error("statusText");
+    console.error(statusText);
     throw new Error("Unauthorized to use spotify api to fetch top tracks", {
-      cause: res,
+      cause: { accessToken, accessTokenUpdatedAt, status, statusText },
     });
   }
 }

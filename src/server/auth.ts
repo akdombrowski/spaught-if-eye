@@ -1,8 +1,9 @@
 import type { JWT } from "next-auth/jwt";
 import type { NextAuthConfig, DefaultSession, Session, User } from "next-auth";
 import NextAuth from "next-auth";
+// import SpotifyProvider from "next-auth/providers/spotify";
+import SpotifyProvider from "@auth/core/providers/spotify";
 // import DiscordProvider from "next-auth/providers/discord";
-import SpotifyProvider from "next-auth/providers/spotify";
 // import GithubProvider from "next-auth/providers/github";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -24,6 +25,7 @@ const DEBUG_CALLBACKS = false;
 declare module "next-auth" {
   interface Session extends DefaultSession {
     accessToken: string | JWT;
+    accessTokenUpdatedAt: number | string;
     user: {
       id: string;
       // ...other properties
@@ -36,6 +38,15 @@ declare module "next-auth" {
   //   // role: UserRole;
   // }
 }
+declare module "next-auth/JWT" {
+  interface JWT extends DefaultJWT {
+    accessToken: string | JWT;
+    accessTokenUpdatedAt: number | string;
+  }
+}
+
+const scopes =
+  "user-read-private user-read-email user-read-recently-played user-top-read user-follow-read user-read-playback-position playlist-modify-public playlist-modify-private playlist-read-collaborative playlist-read-private user-read-currently-playing user-read-playback-state";
 
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
@@ -120,6 +131,7 @@ export const authConfig: NextAuthConfig = {
 
       if (account) {
         token.accessToken = account.access_token;
+        token.accessTokenUpdatedAt = Date();
       }
 
       return token;
@@ -139,7 +151,8 @@ export const authConfig: NextAuthConfig = {
       // } as Session;
       const sesh = {
         ...session,
-        token: token.accessToken,
+        accessToken: token.accessToken,
+        accessTokenUpdatedAt: Date(),
       } as Session;
       //
 
@@ -166,13 +179,21 @@ export const authConfig: NextAuthConfig = {
   //
   // adapter: DrizzleAdapter(db, createTable),
   providers: [
-    // GithubProvider({
-    //   clientId: env.GITHUB_CLIENT_ID,
-    //   clientSecret: env.GITHUB_CLIENT_SECRET,
-    // }),
     SpotifyProvider({
       clientId: env.SPOTIFY_CLIENT_ID,
       clientSecret: env.SPOTIFY_CLIENT_SECRET,
+      authorization:
+        "https://accounts.spotify.com/authorize?scope=" +
+        encodeURIComponent(scopes),
+      // authorization: {
+      //   url: "https://example.com/spotify",
+      //   // url: "https://accounts.spotify.com/authorize/DIFFERENT=TRUE",
+      //   params: {
+      //     // https://developer.spotify.com/documentation/web-api/concepts/scopes#user-read-playback-position
+      //     scope:
+      //       "user-read-private user-read-email user-read-recently-played user-top-read user-follow-read user-read-playback-position playlist-modify-public playlist-modify-private playlist-read-collaborative playlist-read-private user-read-currently-playing user-read-playback-state",
+      //   },
+      // },
       // account: (account) => {
       //   return {
       //     access_token: account.access_token,
@@ -183,10 +204,6 @@ export const authConfig: NextAuthConfig = {
     }),
     /**
      * ...add more providers here.
-     *
-     * Most other providers require a bit more work than the Discord provider. For example, the
-     * GitHub provider requires you to add the `refresh_token_expires_in` field to the Account
-     * model. Refer to the NextAuth.js docs for the provider you want to use. Example:
      *
      * @see https://next-auth.js.org/providers/github
      */

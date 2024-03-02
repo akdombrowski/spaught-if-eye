@@ -2,7 +2,7 @@ import { Container, Grid } from "@mui/material";
 import SignOutButton from "@/components/SignOutButton";
 import SpotifyTool from "@/components/SpotifyTool";
 import { auth } from "@/server/auth";
-import getTopTracks from "../../server/actions/getTopTracks";
+import getTopTracks from "@/server/actions/getTopTracks";
 import { redirect } from "next/navigation";
 
 const session = await auth();
