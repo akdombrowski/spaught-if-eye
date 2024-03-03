@@ -19,46 +19,11 @@ export default function SpotifyTool({
 }) {
   return (
     // <Container maxWidth={false}>
-    <Grid container spacing={6}>
-      <Grid xs={12}>
-        <Grid container spacing={6} justifyContent="center" alignItems="center">
-          <Grid
-            xs={1}
-            display="flex"
-            justifyContent="center"
-            alignItems="center">
-            {session?.user?.image && (
-              <Avatar
-                alt={session?.user?.name ?? ""}
-                src={session?.user?.image}
-              />
-            )}
-          </Grid>
-          <Grid
-            xs={10}
-            display="flex"
-            justifyContent="center"
-            alignItems="center">
-            <Typography variant="h1">Top Tracks</Typography>
-          </Grid>
-          <Grid
-            xs={1}
-            display="flex"
-            justifyContent="center"
-            alignItems="center">
-            <LibraryMusicSharpIcon fontSize="large" />
-          </Grid>
-          <Grid
-            xs={12}
-            display="flex"
-            justifyContent="center"
-            alignItems="center">
-            <SignOutButton />
-          </Grid>
-        </Grid>
-        <Grid xs={12}>{topTracks && <Tracks songs={topTracks} />}</Grid>
-      </Grid>
+
+    <Grid container justifyContent="center" alignItems="center">
+      <Grid xs={12}>{topTracks && <Tracks songs={topTracks} />}</Grid>
     </Grid>
+
     // </Container>
   );
 }

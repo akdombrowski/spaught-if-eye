@@ -9,7 +9,11 @@ export default function TopTracks({ songs }: { songs: Track[] }) {
   const tracks = songs.map((song: Track, i: number) => {
     // const { name, preview_url, external_urls, duration_ms, artists } = song;
     return (
-      <Grid container spacing={5} key={song.name + "_" + i + "-grid-container"}>
+      <Grid
+        id="topTracksGridContainer"
+        container
+        spacing={3}
+        key={song.name + "_" + i + "-grid-container"}>
         <Grid xs={10}>
           <Typography id={"song-" + song.name}>{song.name}</Typography>
         </Grid>
@@ -18,15 +22,17 @@ export default function TopTracks({ songs }: { songs: Track[] }) {
             {song.duration_ms}ms
           </Typography>
         </Grid>
-        <Grid xs={12}>
+        <Grid id="spotifyLinkGridItem" xs={12}>
           <Typography id={"spotify-url-" + song.name}>
             <Link href={song.external_urls.spotify}>
               {song.external_urls.spotify}
             </Link>
           </Typography>
         </Grid>
-        <Grid container id={"artists-" + song.name}>
-          <Artists artists={song.artists} />
+        <Grid xs={12}>
+          <Grid container id={"artists-" + song.name}>
+            <Artists artists={song.artists} />
+          </Grid>
         </Grid>
         {song.preview_url && (
           <Grid xs={12}>

@@ -41,13 +41,50 @@ export default async function Music(_props) {
 
   return (
     <Container maxWidth={false}>
-      <Grid container spacing={6}>
-        <Grid xs={12}>
-          {topTracks?.length && (
-            <SpotifyTool topTracks={topTracks} session={session} />
+      <Grid container spacing={3}>
+        <Grid xs={1} display="flex" justifyContent="center" alignItems="center">
+          {session?.user?.image && (
+            <Avatar
+              alt={session?.user?.name ?? ""}
+              src={session?.user?.image}
+            />
           )}
         </Grid>
-        <Grid xs={12}>
+        <Grid
+          xs={10}
+          display="flex"
+          justifyContent="center"
+          alignItems="center">
+          <Typography variant="h3" component="h1" textAlign="center">
+            Top Tracks
+          </Typography>
+        </Grid>
+        <Grid xs={1} display="flex" justifyContent="center" alignItems="center">
+          <LibraryMusicSharpIcon fontSize="large" />
+        </Grid>
+        <Grid
+          xs={12}
+          display="flex"
+          justifyContent="center"
+          alignItems="center">
+          <SignOutButton />
+        </Grid>
+        <Grid id="signOutBtnGridRow" xs={12}>
+          <Grid
+            container
+            justifyContent="center"
+            alignItems="center"
+            spacing={6}>
+            {topTracks?.length && (
+              <SpotifyTool topTracks={topTracks} session={session} />
+            )}
+          </Grid>
+        </Grid>
+        <Grid
+          xs={12}
+          display="flex"
+          justifyContent="center"
+          alignItems="center">
           <SignOutButton />
         </Grid>
       </Grid>
