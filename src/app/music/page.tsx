@@ -2,12 +2,11 @@ import { Container, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import Avatar from "@mui/material/Avatar";
 import LibraryMusicSharpIcon from "@mui/icons-material/LibraryMusicSharp";
-import SignOutButton from "@/components/SignOutButton";
-import SpotifyTool from "@/components/SpotifyTool";
-import { auth } from "@/server/auth";
-import getTopTracks from "@/server/actions/getTopTracks";
+import SignOutButton from "~/components/SignOutButton";
+import SpotifyTool from "~/components/SpotifyTool";
+import { auth } from "~/auth";
+import getTopTracks from "~/spotify/getTopTracks";
 import { redirect } from "next/navigation";
-import { Coffee, Food } from "mdi-material-ui";
 
 const DEBUG = false;
 

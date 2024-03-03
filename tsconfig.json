@@ -32,9 +32,12 @@
     "baseUrl": ".",
     // module path aliases
     "paths": {
-      "@/*": ["./src/*"],
-      "@/types/*": ["./src/types/*"],
-      "@/auth/*": ["./src/app/api/auth/*"]
+      "~/*": ["./src/*"],
+      "~/types/*": ["./src/types/*"],
+      "~/auth-api/*": ["./src/app/api/auth/*"],
+      "~/auth": ["./src/auth/auth.ts"],
+      "~/auth-spotify": ["src/auth/spotifyAuth"],
+      "~/spotify/*": ["./src/spotify/actions/*"]
     },
 
     // Generate d.ts files

@@ -1,10 +1,10 @@
 import type { User } from "next-auth";
 import { type NextRequest, NextResponse } from "next/server";
-import { db } from "@/server/db";
-import { users } from "@/server/db/schema";
+import { db } from "~/db";
+import { users } from "~/db/schema";
 import { eq } from "drizzle-orm";
-import { auth } from "@/server/auth";
-import type { SpotifyAPIUserTopResponse, Track } from "@/types/SpotifyAPI";
+import { auth } from "~/auth";
+import type { SpotifyAPIUserTopResponse, Track } from "~/types/SpotifyAPI";
 import { redirect } from "next/navigation";
 
 const getToken = async (userId: User["id"]): Promise<string | null> => {

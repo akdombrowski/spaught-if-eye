@@ -16,11 +16,11 @@ import type { SpotifyProfile } from "@auth/core/providers/spotify";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { env } from "@/env";
+import { env } from "~/env";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { db } from "@/server/db";
+import { db } from "~/db";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { createTable } from "@/server/db/schema";
+import { createTable } from "~/db/schema";
 
 const DEBUG_CALLBACKS = false;
 

@@ -1,6 +1,5 @@
-import { type Track, type SpotifyAPIUserTopResponse } from "@/types/SpotifyAPI";
-import { auth } from "@/server/auth";
-import type { Session } from "next-auth";
+import { type Track, type SpotifyAPIUserTopResponse } from "~/types/SpotifyAPI";
+import { auth } from "~/auth";
 
 const DEBUG = false;
 

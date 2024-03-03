@@ -1,11 +1,12 @@
 import { eq } from "drizzle-orm";
-import { db } from "@/server/db";
-import { accounts, sessions } from "@/server/db/schema";
+import { db } from "~/db";
+import { accounts, sessions } from "~/db/schema";
 
 export enum ErrorFetchTokenFromDB {
   noAcct = "NO_ACCT_FOUND",
   noAccessToken = "NO_ACCESS_TOKEN_ON_ACCT",
 }
+
 export const getTokenFromDB = async (
   userId: string,
 ): Promise<ErrorFetchTokenFromDB | string> => {

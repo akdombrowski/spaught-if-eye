@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Unstable_Grid2";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
-import type { Track } from "@/types/SpotifyAPI";
+import type { Track } from "~/types/SpotifyAPI";
 import Artists from "./Artists";
 // import Link from "next/link";
 

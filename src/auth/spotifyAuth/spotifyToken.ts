@@ -1,10 +1,10 @@
 import { eq } from "drizzle-orm";
 import type { User } from "next-auth";
-import { db } from "@/server/db";
-import { accounts } from "@/server/db/schema";
+import { db } from "~/db";
+import { accounts } from "~/db/schema";
 import { redirect } from "next/navigation";
-import { auth } from "@/server/auth";
-import { getTokenFromDB } from "@/server/actions/spotifyTokens";
+import { auth } from "~/auth";
+import { getTokenFromDB } from "~/auth-spotify";
 
 import { ErrorFetchTokenFromDB, resetTokens } from "./dbTokens";
 
@@ -215,4 +215,4 @@ export const spotifyRefreshToken = async (
   }
 };
 
-export default getTokenFromDB;
+export default getToken;
