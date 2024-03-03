@@ -36,7 +36,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <AppRouterCacheProvider>
           {/* <CustomThemeProvider>{children}</CustomThemeProvider> */}
           <ThemeProvider theme={theme}>
-            {/* <CssBaseline /> */}
+            <CssBaseline enableColorScheme />
             {children}
           </ThemeProvider>
         </AppRouterCacheProvider>

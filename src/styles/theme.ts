@@ -4,6 +4,13 @@ import "client-only";
 import { type ThemeOptions, createTheme } from "@mui/material/styles";
 import { type PaletteMode } from "@mui/material";
 
+import { Roboto } from "next/font/google";
+
+const roboto = Roboto({
+  weight: ["300", "400", "500", "700"],
+  subsets: ["latin"],
+  display: "swap",
+});
 declare module "@mui/material/styles" {
   interface Theme {
     status: {
@@ -71,6 +78,9 @@ export const themeOptions: ThemeOptions = getDesignTokens("dark");
 // export const theme = createTheme(themeOptions);
 
 export const theme = createTheme({
+  typography: {
+    fontFamily: roboto.style.fontFamily,
+  },
   palette: {
     primary: {
       main: "#badefe",
@@ -81,7 +91,7 @@ export const theme = createTheme({
       contrastText: "#f3e28f",
     },
     background: {
-      // main: "#080708",
+      paper: "#080708",
       default: "#080708",
     },
     text: {
