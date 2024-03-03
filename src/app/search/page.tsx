@@ -30,13 +30,15 @@ const red = async () => {
   }
 };
 
-export default async function Music(_props) {
+export default async function Search(_props) {
   const topTracks = await red();
   const session = await auth();
 
-  if (!topTracks || !session) {
+  if (!session) {
     redirect("/api/auth/signin");
   }
+
+  const search = async (params: FormData) => {};
 
   return (
     <Container maxWidth={false}>
