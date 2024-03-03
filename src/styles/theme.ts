@@ -96,6 +96,7 @@ export const theme = createTheme({
     },
     text: {
       primary: "#cae9ff",
+      secondary: "#cae9ff",
     },
     error: {
       main: "#b86f52",
