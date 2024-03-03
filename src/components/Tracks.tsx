@@ -12,7 +12,9 @@ export default function TopTracks({ songs }: { songs: Track[] }) {
       <Grid
         id="topTracksGridContainer"
         container
-        spacing={3}
+        rowSpacing={3}
+        columnSpacing={1}
+        columns={12}
         key={song.name + "_" + i + "-grid-container"}>
         <Grid xs={10}>
           <Typography id={"song-" + song.name}>{song.name}</Typography>
@@ -23,11 +25,13 @@ export default function TopTracks({ songs }: { songs: Track[] }) {
           </Typography>
         </Grid>
         <Grid id="spotifyLinkGridItem" xs={12}>
-          <Typography id={"spotify-url-" + song.name}>
-            <Link href={song.external_urls.spotify}>
+          <Link href={song.external_urls.spotify}>
+            <Typography
+              id={"spotify-url-" + song.name}
+              sx={{ textOverflow: "ellipsis" }}>
               {song.external_urls.spotify}
-            </Link>
-          </Typography>
+            </Typography>
+          </Link>
         </Grid>
         <Grid xs={12}>
           <Grid container id={"artists-" + song.name}>
@@ -44,8 +48,8 @@ export default function TopTracks({ songs }: { songs: Track[] }) {
   });
 
   return (
-    <Grid container>
-      <Grid xs={12}>{tracks}</Grid>
+    <Grid container rowSpacing={6} columnSpacing={1}>
+      {tracks}
     </Grid>
   );
 }
