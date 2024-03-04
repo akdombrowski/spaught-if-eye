@@ -22,8 +22,6 @@ export const search = async ({
 }: {
   searchRequest: SpotifySearchReq;
 }): Promise<SpotifySearchTypes> => {
-  const { album, artist, track, year, upc, tags, isrc, genre } =
-    searchRequest.q;
   const session: Session | null = await auth();
   const accessToken = session?.accessToken as string;
   const accessTokenUpdatedAt = session?.accessTokenUpdatedAt as number;
@@ -31,6 +29,9 @@ export const search = async ({
   if (!accessToken) {
     throw new Error("No token", { cause: searchRequest });
   }
+
+  const filters = searchRequest.q.filters;
+  const { album, artist, track, year, upc, tags, isrc, genre } = filters;
 
   if (album && genre) {
     throw new Error(
@@ -51,11 +52,13 @@ export const search = async ({
       { cause: searchRequest },
     );
   }
+
   if (isrc && (artist || genre || album)) {
     throw new Error("isrc can only be used while searching for tracks.", {
       cause: searchRequest,
     });
   }
+
   if (track && (artist || genre || album)) {
     throw new Error("isrc can only be used while searching for tracks.", {
       cause: searchRequest,
@@ -63,7 +66,9 @@ export const search = async ({
   }
 
   let query = "";
-  const params = Object.entries(searchRequest).filter((p) => p[0] !== "q");
+  const params = Object.entries(searchRequest).filter(
+    (param) => param[0] !== "q",
+  );
   for (const param of Object.values(params)) {
     if (query.length) {
       query += "&";
@@ -71,7 +76,7 @@ export const search = async ({
     query += String(param);
   }
 
-  for (const f of Object.values(searchRequest.q)) {
+  for (const f of Object.values(searchRequest.q.filters)) {
     if (query.length) {
       query += "&";
     }

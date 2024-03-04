@@ -13,5 +13,5 @@ export default async function Home() {
     return <SignInPage />;
   }
 
-  redirect("/music");
+  redirect("/top-tracks");
 }

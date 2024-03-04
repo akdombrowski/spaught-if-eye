@@ -3,42 +3,19 @@ import Grid from "@mui/material/Unstable_Grid2";
 import Avatar from "@mui/material/Avatar";
 import LibraryMusicSharpIcon from "@mui/icons-material/LibraryMusicSharp";
 import SignOutButton from "~/components/SignOutButton";
-import SpotifyTool from "~/components/SpotifyTool";
+import SearchForm from "~/components/SearchForm";
 import { auth } from "~/auth";
 import getTopTracks from "~/spotify/getTopTracks";
 import { redirect } from "next/navigation";
 
 const DEBUG = false;
 
-const red = async () => {
-  try {
-    const topTracks = await getTopTracks();
-    if (DEBUG) {
-      console.log();
-      console.log();
-      console.log();
-      console.log("topTracks");
-      console.log(topTracks);
-      console.log();
-      console.log();
-      console.log();
-    }
-    return topTracks;
-  } catch (error) {
-    console.error("couldn't get tracks:", error);
-    return null;
-  }
-};
-
 export default async function Search(_props) {
-  const topTracks = await red();
   const session = await auth();
 
   if (!session) {
     redirect("/api/auth/signin");
   }
-
-  const search = async (params: FormData) => {};
 
   return (
     <Container maxWidth={false}>
@@ -57,7 +34,7 @@ export default async function Search(_props) {
           justifyContent="center"
           alignItems="center">
           <Typography variant="h3" component="h1" textAlign="center">
-            Top Tracks
+            Search
           </Typography>
         </Grid>
         <Grid xs={1} display="flex" justifyContent="center" alignItems="center">
@@ -76,9 +53,7 @@ export default async function Search(_props) {
             justifyContent="center"
             alignItems="center"
             spacing={6}>
-            {topTracks?.length && (
-              <SpotifyTool topTracks={topTracks} session={session} />
-            )}
+            <SearchForm />
           </Grid>
         </Grid>
         <Grid

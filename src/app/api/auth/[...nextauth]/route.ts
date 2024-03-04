@@ -7,4 +7,4 @@
 // export { handler as GET, handler as POST };
 
 // v5
-export { GET, POST } from "~/server/auth";
+export { GET, POST } from "~/auth";
