@@ -20,13 +20,13 @@ export const enum SpotifySearchFilterTag {
 }
 
 export interface SpotifySearchQueryFilters {
-  album?: Album;
-  artist?: Artist;
-  track?: Track;
+  album?: string;
+  artist?: string;
+  track?: string;
   year?: number;
   upc?: string;
   // Can only use with albums
-  tags?: SpotifySearchTag;
+  tags?: SpotifySearchFilterTag;
   // Can only use with albumss
   isrc?: "isrc";
   genre?: string;

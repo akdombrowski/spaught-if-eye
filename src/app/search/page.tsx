@@ -3,7 +3,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import Avatar from "@mui/material/Avatar";
 import LibraryMusicSharpIcon from "@mui/icons-material/LibraryMusicSharp";
 import SignOutButton from "~/components/SignOutButton";
-import SearchForm from "~/components/SearchForm";
+import SearchForm from "~/components/form/SearchForm";
 import { auth } from "~/auth";
 import getTopTracks from "~/spotify/getTopTracks";
 import { redirect } from "next/navigation";
