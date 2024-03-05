@@ -11,9 +11,9 @@ export function onPlayerReady(event) {
   event.target.playVideo();
 }
 
-export getPlayer = (videoid: string) => {
-  document.querySelector("lite-youtube")
-}
+export const getPlayer = (videoid: string) => {
+  return document.querySelector("lite-youtube");
+};
 // 5. The API calls this function when the player's state changes.
 //    The function indicates that when playing a video (state=1),
 //    the player should play for six seconds and then stop.
