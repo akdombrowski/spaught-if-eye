@@ -1,4 +1,4 @@
-import { Container, Typography } from "@mui/material";
+import { Button, Container, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import Avatar from "@mui/material/Avatar";
 import LibraryMusicSharpIcon from "@mui/icons-material/LibraryMusicSharp";
@@ -41,35 +41,76 @@ export default async function TopTracks(_props) {
   return (
     <Container maxWidth={false}>
       <Grid container spacing={3}>
-        <Grid xs={1} display="flex" justifyContent="center" alignItems="center">
-          {session?.user?.image && (
-            <Avatar
-              alt={session?.user?.name ?? ""}
-              src={session?.user?.image}
-            />
-          )}
+        {/**
+         *
+         * HEADER
+         */}
+        <Grid xs={10}>
+          <Grid container spacing={1} justifyContent="center">
+            <Grid
+              xs={11}
+              display="flex"
+              justifyContent="center"
+              alignItems="center">
+              {session?.user?.image && (
+                <Avatar
+                  alt={session?.user?.name ?? ""}
+                  src={session?.user?.image}
+                />
+              )}
+            </Grid>
+            <Grid
+              xs={6}
+              display="flex"
+              justifyContent="center"
+              alignItems="center">
+              <Typography variant="h3" component="h1" textAlign="center">
+                Top Tracks
+              </Typography>
+            </Grid>
+            <Grid
+              xs={1}
+              display="flex"
+              justifyContent="center"
+              alignItems="center">
+              <LibraryMusicSharpIcon fontSize="large" />
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid
-          xs={10}
-          display="flex"
-          justifyContent="center"
-          alignItems="center">
-          <Typography variant="h3" component="h1" textAlign="center">
-            Top Tracks
-          </Typography>
+        <Grid xs={2} display="flex" justifyContent="center" alignItems="center">
+          <SignOutButton />
         </Grid>
-        <Grid xs={1} display="flex" justifyContent="center" alignItems="center">
-          <LibraryMusicSharpIcon fontSize="large" />
-        </Grid>
+        {/**
+         * HEADER
+         *
+         */}
+
+        {/**
+         *
+         * GO TO SEARCH PAGE
+         */}
         <Grid
           xs={12}
           display="flex"
           justifyContent="center"
           alignItems="center">
-          <SignOutButton />
+          <Button
+            id="search page button"
+            onClick={() => redirect("../search")}
+          />
         </Grid>
-        <Grid id="signOutBtnGridRow" xs={12}>
+        {/**
+         * GO TO SEARCH PAGE
+         *
+         */}
+
+        {/**
+         *
+         * SpotifyTool
+         */}
+        <Grid id="SpotifyToolGridRow" xs={12}>
           <Grid
+            id="SpotifyToolGridContainer"
             container
             justifyContent="center"
             alignItems="center"
@@ -79,6 +120,15 @@ export default async function TopTracks(_props) {
             )}
           </Grid>
         </Grid>
+        {/**
+         * SpotifyTool
+         *
+         */}
+
+        {/**
+         *
+         * Sign Out Bottom
+         */}
         <Grid
           xs={12}
           display="flex"
@@ -86,6 +136,9 @@ export default async function TopTracks(_props) {
           alignItems="center">
           <SignOutButton />
         </Grid>
+        {/**
+         * Sign Out Bottom
+         */}
       </Grid>
     </Container>
   );

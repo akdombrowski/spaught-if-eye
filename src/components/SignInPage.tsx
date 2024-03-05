@@ -2,12 +2,10 @@
 import "client-only";
 
 import Avatar from "@mui/material/Avatar";
-import Box from "@mui/material/Box";
 import Grid from "@mui/material/Unstable_Grid2";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import SignInButton from "./SignInButton";
-import Link from "next/link";
 
 export default function SignInPage() {
   return (

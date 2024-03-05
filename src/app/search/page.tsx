@@ -45,7 +45,7 @@ export default async function Search(_props) {
           display="flex"
           justifyContent="center"
           alignItems="center">
-          <SignOutButton />
+          <SignOutButton id="signOutBtnInHeader" />
         </Grid>
         <Grid id="signOutBtnGridRow" xs={12}>
           <Grid
