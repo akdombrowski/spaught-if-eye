@@ -1296,6 +1296,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/youtube@npm:^0.0.50":
+  version: 0.0.50
+  resolution: "@types/youtube@npm:0.0.50"
+  checksum: 10c0/147c0f4333a1e090917fbd87b3a7a14f89ff57beaeb6e66797628c5dc0fb27c00b2136201f58caabdb09eac985d6ab45180d24e744e73aa1240f8b562311c60f
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/eslint-plugin@npm:^7.1.0":
   version: 7.1.0
   resolution: "@typescript-eslint/eslint-plugin@npm:7.1.0"
@@ -4812,6 +4819,7 @@ __metadata:
     "@types/node": "npm:^20.11.24"
     "@types/react": "npm:^18.2.61"
     "@types/react-dom": "npm:^18.2.19"
+    "@types/youtube": "npm:^0.0.50"
     "@typescript-eslint/eslint-plugin": "npm:^7.1.0"
     "@typescript-eslint/parser": "npm:^7.1.0"
     client-only: "npm:^0.0.1"
