@@ -11,6 +11,10 @@ import CssBaseline from "@mui/material/CssBaseline";
 import CustomThemeProvider from "~/styles/CustomThemeProvider";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "~/styles/theme";
+
+/**
+ * https://nextjs.org/docs/app/building-your-application/optimizing/third-party-libraries#google-third-parties
+ */
 import { GoogleTagManager } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
