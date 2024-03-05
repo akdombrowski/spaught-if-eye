@@ -11,6 +11,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import CustomThemeProvider from "~/styles/CustomThemeProvider";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "~/styles/theme";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
   title: {
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             {children}
           </ThemeProvider>
         </AppRouterCacheProvider>
+        {/* <GoogleTagManager gtmId="GTM-XYZ" /> */}
       </body>
     </html>
   );
