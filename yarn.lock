@@ -1041,6 +1041,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@next/third-parties@npm:^14.1.2":
+  version: 14.1.2
+  resolution: "@next/third-parties@npm:14.1.2"
+  dependencies:
+    third-party-capital: "npm:1.0.20"
+  peerDependencies:
+    next: ^13.0.0 || ^14.0.0
+    react: ^18.2.0
+  checksum: 10c0/fb30370c97acaeef01ec484460bb83d15e5e21e05b7ba930d7d118813e8444f770f7153dfe3d2a4008aeb7ce27ede609e9ef02baaf3059991d715fdcde3845bf
+  languageName: node
+  linkType: hard
+
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -4791,6 +4803,7 @@ __metadata:
     "@mui/icons-material": "npm:^5.15.11"
     "@mui/material": "npm:^5.15.11"
     "@mui/material-nextjs": "npm:^5.15.11"
+    "@next/third-parties": "npm:^14.1.2"
     "@planetscale/database": "npm:^1.16.0"
     "@t3-oss/env-nextjs": "npm:^0.9.2"
     "@tanstack/eslint-plugin-query": "npm:^5.20.1"
@@ -5006,6 +5019,13 @@ __metadata:
   version: 0.2.0
   resolution: "text-table@npm:0.2.0"
   checksum: 10c0/02805740c12851ea5982686810702e2f14369a5f4c5c40a836821e3eefc65ffeec3131ba324692a37608294b0fd8c1e55a2dd571ffed4909822787668ddbee5c
+  languageName: node
+  linkType: hard
+
+"third-party-capital@npm:1.0.20":
+  version: 1.0.20
+  resolution: "third-party-capital@npm:1.0.20"
+  checksum: 10c0/7f45ff156ec9d7e2957a5b39061be22b780ffbd2d93c127252d908e2bff6cdd09f827a95909d457c8096e036f155006a38e355a06ee11cb6d63c7f4b150bbfb0
   languageName: node
   linkType: hard
 
