@@ -7,6 +7,7 @@ import SpotifyTool from "~/components/SpotifyTool";
 import { auth } from "~/auth";
 import getTopTracks from "~/spotify/getTopTracks";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 const DEBUG = false;
 
@@ -94,10 +95,9 @@ export default async function TopTracks(_props) {
           display="flex"
           justifyContent="center"
           alignItems="center">
-          <Button
-            id="search page button"
-            onClick={() => redirect("../search")}
-          />
+          <Link href="/search">
+            <Button id="search page button">Search</Button>
+          </Link>
         </Grid>
         {/**
          * GO TO SEARCH PAGE
