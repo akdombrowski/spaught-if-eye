@@ -10,7 +10,7 @@ export default function PageTitle(props: { pages: PageByPathnameType }) {
   const pathname = usePathname();
   const { pages } = props;
   return (
-    <Typography variant="h3" component="h1" textAlign="center">
+    <Typography variant="h5" component="h1" textAlign="center">
       {pages[pathname]?.title ?? pathname}
     </Typography>
   );

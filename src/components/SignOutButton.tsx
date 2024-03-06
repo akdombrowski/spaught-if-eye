@@ -10,6 +10,7 @@ export default function SignOutButton(props) {
   return (
     <Button
       {...props}
+      sx={{ backgroundColor: "rgba(186, 222, 254, 0.9)" }}
       variant="contained"
       onClick={() => {
         void signOut();

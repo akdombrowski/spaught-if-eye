@@ -117,13 +117,13 @@ export const theme = createTheme({
     fontWeightMedium: 700,
     h1: {
       fontWeight: 1000,
-      lineHeight: 1.05,
+      lineHeight: 1.0,
       fontSize: "10rem",
     },
     h2: {
       fontSize: "10rem",
       fontWeight: 500,
-      lineHeight: 1.05,
+      lineHeight: 1.0,
     },
     h3: {
       fontWeight: 400,
@@ -132,7 +132,7 @@ export const theme = createTheme({
     h4: {
       fontWeight: 100,
       fontSize: "7rem",
-      lineHeight: 1.03,
+      lineHeight: 1.0,
     },
     h5: {
       fontWeight: 100,
@@ -141,7 +141,7 @@ export const theme = createTheme({
     h6: {
       fontWeight: 1000,
       fontSize: "2rem",
-      lineHeight: 1.01,
+      lineHeight: 1.0,
     },
     subtitle2: {
       fontWeight: 1000,
@@ -156,16 +156,16 @@ export const theme = createTheme({
     body1: {
       fontSize: "1rem",
       fontWeight: 500,
-      lineHeight: 1.25,
+      lineHeight: 1.0,
     },
     body2: {
       fontSize: "1rem",
       fontWeight: 100,
-      lineHeight: 1.1,
+      lineHeight: 1.0,
     },
     button: {
       fontWeight: 1000,
-      fontSize: "2rem",
+      fontSize: "1rem",
       lineHeight: 2.08,
     },
     caption: {

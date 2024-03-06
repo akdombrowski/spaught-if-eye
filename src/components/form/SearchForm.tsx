@@ -91,7 +91,7 @@ export default function SearchForm() {
       id="searchForm"
       noValidate
       onSubmit={handleSubmit(onSubmit)}>
-      <Grid container columns={12}>
+      <Grid container columns={12} spacing={6}>
         <Grid xs={12}>
           <LightTooltip title="song name">
             <Typography>

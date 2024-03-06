@@ -19,35 +19,13 @@ export default async function Search(_props) {
 
   return (
     <Container maxWidth={false}>
-      <Grid container spacing={3}>
-        <Grid xs={1} display="flex" justifyContent="center" alignItems="center">
-          {session?.user?.image && (
-            <Avatar
-              alt={session?.user?.name ?? ""}
-              src={session?.user?.image}
-            />
-          )}
-        </Grid>
+      <Grid container spacing={6}>
         <Grid
-          xs={10}
+          id="signOutBtnGridRow"
           display="flex"
           justifyContent="center"
-          alignItems="center">
-          <Typography variant="h3" component="h1" textAlign="center">
-            Search
-          </Typography>
-        </Grid>
-        <Grid xs={1} display="flex" justifyContent="center" alignItems="center">
-          <LibraryMusicSharpIcon fontSize="large" />
-        </Grid>
-        <Grid
-          xs={12}
-          display="flex"
-          justifyContent="center"
-          alignItems="center">
-          <SignOutButton id="signOutBtnInHeader" />
-        </Grid>
-        <Grid id="signOutBtnGridRow" xs={12}>
+          alignItems="center"
+          xs={12}>
           <Grid
             container
             justifyContent="center"

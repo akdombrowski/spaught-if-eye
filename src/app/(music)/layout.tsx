@@ -6,8 +6,8 @@ import Grid from "@mui/material/Unstable_Grid2";
 import Avatar from "@mui/material/Avatar";
 import LibraryMusicSharpIcon from "@mui/icons-material/LibraryMusicSharp";
 import SignOutButton from "~/components/SignOutButton";
-import TabNavigation from "~/components/pageHeader/tabNavigation";
-import PageTitle from "~/components/pageHeader/pageTitle";
+import TabNavigation from "~/components/pageHeader/TabNavigation";
+import PageTitle from "~/components/pageHeader/PageTitle";
 
 import { auth } from "~/auth";
 
@@ -26,57 +26,70 @@ export default async function MusicLayout({
   const session = await auth();
   return (
     <Container maxWidth={false}>
-      <Grid container spacing={3}>
-        {/**
-         *
-         * HEADER
-         */}
-        <Grid xs={10}>
-          <Grid container spacing={1} justifyContent="center">
+      <Grid container justifyContent="center" alignItems="center" spacing={6}>
+        <Grid container spacing={3} justifyContent="center" alignItems="center">
+          {/**
+           *
+           * HEADER
+           */}
+          <Grid
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            xs={10}>
             <Grid
-              xs={11}
-              display="flex"
-              justifyContent="center"
-              alignItems="center">
-              {session?.user?.image && (
-                <Avatar
-                  alt={session?.user?.name ?? ""}
-                  src={session?.user?.image}
-                />
-              )}
-            </Grid>
-            <PageTitle pages={PAGES} />
-            <Grid
-              xs={1}
-              display="flex"
-              justifyContent="center"
-              alignItems="center">
-              <LibraryMusicSharpIcon fontSize="large" />
-              pa
+              container
+              spacing={1}
+              alignItems="center"
+              justifyContent="center">
+              <Grid
+                xs={11}
+                display="flex"
+                justifyContent="center"
+                alignItems="center">
+                {session?.user?.image && (
+                  <Avatar
+                    alt={session?.user?.name ?? ""}
+                    src={session?.user?.image}
+                  />
+                )}
+              </Grid>
+              <PageTitle pages={PAGES} />
+              <Grid
+                xs={1}
+                display="flex"
+                justifyContent="center"
+                alignItems="center">
+                <LibraryMusicSharpIcon fontSize="large" />
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-        <Grid xs={2} display="flex" justifyContent="center" alignItems="center">
-          <SignOutButton />
-        </Grid>
-        {/**
-         * HEADER
-         *
-         */}
+          <Grid
+            xs={2}
+            display="flex"
+            justifyContent="center"
+            alignItems="center">
+            <SignOutButton />
+          </Grid>
+          {/**
+           * HEADER
+           *
+           */}
 
-        {/**
-         *
-         * TAB NAV
-         */}
-        <Grid xs={12}>
-          <TabNavigation pages={PAGES} />
+          {/**
+           *
+           * TAB NAV
+           */}
+          <Grid xs={12} paddingBottom="2rem">
+            <TabNavigation pages={PAGES} />
+          </Grid>
+          {/**
+           * TAB NAV
+           *
+           */}
         </Grid>
-        {/**
-         * TAB NAV
-         *
-         */}
 
-        <Grid>{children}</Grid>
+        <Grid xs={12}>{children}</Grid>
       </Grid>
     </Container>
   );
