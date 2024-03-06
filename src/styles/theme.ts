@@ -1,7 +1,11 @@
 "use client";
 import "client-only";
 
-import { type ThemeOptions, createTheme } from "@mui/material/styles";
+import {
+  type ThemeOptions,
+  createTheme,
+  responsiveFontSizes,
+} from "@mui/material/styles";
 import { type PaletteMode } from "@mui/material";
 
 import { Roboto } from "next/font/google";
@@ -78,31 +82,109 @@ export const themeOptions: ThemeOptions = getDesignTokens("dark");
 // export const theme = createTheme(themeOptions);
 
 export const theme = createTheme({
-  typography: {
-    fontFamily: roboto.style.fontFamily,
-  },
   palette: {
+    mode: "dark",
     primary: {
       main: "#badefe",
       contrastText: "#ec562c",
     },
     secondary: {
-      main: "#001fab",
+      main: "#0b1567",
       contrastText: "#f3e28f",
     },
     background: {
-      paper: "#080708",
-      default: "#080708",
+      default: "#000004",
     },
     text: {
-      primary: "#cae9ff",
-      secondary: "#cae9ff",
+      primary: "#b8d7dc",
+      secondary: "#e2e4ea",
     },
     error: {
-      main: "#b86f52",
+      main: "#b71c1c",
     },
-    divider: "#4c0000",
+    divider: "#4dd0e1",
+    success: {
+      main: "#1a237e",
+    },
+    info: {
+      main: "#0091ea",
+    },
+  },
+  typography: {
+    fontFamily: "Roboto",
+    fontWeightBold: 1000,
+    fontWeightMedium: 700,
+    h1: {
+      fontWeight: 1000,
+      lineHeight: 1.05,
+      fontSize: "10rem",
+    },
+    h2: {
+      fontSize: "10rem",
+      fontWeight: 500,
+      lineHeight: 1.05,
+    },
+    h3: {
+      fontWeight: 400,
+      fontSize: "8rem",
+    },
+    h4: {
+      fontWeight: 100,
+      fontSize: "7rem",
+      lineHeight: 1.03,
+    },
+    h5: {
+      fontWeight: 100,
+      fontSize: "5rem",
+    },
+    h6: {
+      fontWeight: 1000,
+      fontSize: "2rem",
+      lineHeight: 1.01,
+    },
+    subtitle2: {
+      fontWeight: 1000,
+      lineHeight: 0.5,
+      fontSize: "1.1rem",
+    },
+    subtitle1: {
+      fontWeight: 100,
+      lineHeight: 1,
+      fontSize: "0.5rem",
+    },
+    body1: {
+      fontSize: "1rem",
+      fontWeight: 500,
+      lineHeight: 1.25,
+    },
+    body2: {
+      fontSize: "1rem",
+      fontWeight: 100,
+      lineHeight: 1.1,
+    },
+    button: {
+      fontWeight: 1000,
+      fontSize: "2rem",
+      lineHeight: 2.08,
+    },
+    caption: {
+      fontWeight: 600,
+      fontSize: "2rem",
+    },
+    overline: {
+      fontWeight: 100,
+      fontSize: "2rem",
+    },
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: (themeParam) => `
+        h1 {
+          color: ${themeParam.palette.success.main};
+        }
+      `,
+    },
   },
 });
 
-export default theme;
+export default responsiveFontSizes(theme);

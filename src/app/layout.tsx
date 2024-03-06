@@ -8,10 +8,8 @@ import type { ReactNode } from "react";
 
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import CssBaseline from "@mui/material/CssBaseline";
-import CustomThemeProvider from "~/styles/CustomThemeProvider";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "~/styles/theme";
-import TabNavigation from "~/components/header/tabNavigation";
 /**
  * https://nextjs.org/docs/app/building-your-application/optimizing/third-party-libraries#google-third-parties
  */
@@ -42,7 +40,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {/* <CustomThemeProvider>{children}</CustomThemeProvider> */}
           <ThemeProvider theme={theme}>
             <CssBaseline enableColorScheme />
-            <TabNavigation />
             {children}
           </ThemeProvider>
         </AppRouterCacheProvider>
