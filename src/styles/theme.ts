@@ -89,25 +89,26 @@ export const theme = createTheme({
       contrastText: "#ec562c",
     },
     secondary: {
-      main: "#0b1567",
+      main: "#004FFF",
       contrastText: "#f3e28f",
     },
     background: {
-      default: "#000004",
+      default: "#00001A",
     },
     text: {
-      primary: "#b8d7dc",
-      secondary: "#e2e4ea",
+      primary: "#85FF9E",
+      secondary: "#282A2F",
     },
     error: {
-      main: "#b71c1c",
+      main: "#EF6F6C",
     },
     divider: "#4dd0e1",
     success: {
-      main: "#1a237e",
+      main: "#63A375",
+      contrastText: "#9EE37D",
     },
     info: {
-      main: "#0091ea",
+      main: "#BBD686",
     },
   },
   typography: {
