@@ -37,7 +37,8 @@
       "~/auth-api/*": ["./src/app/api/auth/*"],
       "~/auth": ["./src/auth/auth.ts"],
       "~/auth-spotify": ["src/auth/spotifyAuth"],
-      "~/spotify/*": ["./src/spotify/actions/*"]
+      "~/spotify/*": ["./src/spotify/actions/*"],
+      "~/music/*": ["./src/(music)/*"]
     },
 
     // Generate d.ts files
@@ -62,10 +63,10 @@
     ".eslintrc.cjs",
     "next-env.d.ts",
     "**/*.ts",
+    "**/*.js",
     "**/types/*d.ts",
     "**/*.tsx",
     "**/*.cjs",
-    "**/*.js",
     ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]

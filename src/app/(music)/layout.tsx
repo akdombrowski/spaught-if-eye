@@ -1,14 +1,22 @@
 import type { ReactNode } from "react";
+import type { PageByPathnameType } from "~/types/pages";
 
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Unstable_Grid2";
-import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import LibraryMusicSharpIcon from "@mui/icons-material/LibraryMusicSharp";
 import SignOutButton from "~/components/SignOutButton";
-import TabNavigation from "~/components/header/tabNavigation";
+import TabNavigation from "~/components/pageHeader/tabNavigation";
+import PageTitle from "~/components/pageHeader/pageTitle";
 
 import { auth } from "~/auth";
+
+const PAGES: PageByPathnameType = {
+  "/top-tracks": { title: "Top Tracks" },
+  "/search": { title: "Search" },
+  "/videos": { title: "Videos" },
+  "/": { title: "Home" },
+};
 
 export default async function MusicLayout({
   children,
@@ -37,21 +45,14 @@ export default async function MusicLayout({
                 />
               )}
             </Grid>
-            <Grid
-              xs={6}
-              display="flex"
-              justifyContent="center"
-              alignItems="center">
-              <Typography variant="h3" component="h1" textAlign="center">
-                Top Tracks
-              </Typography>
-            </Grid>
+            <PageTitle pages={PAGES} />
             <Grid
               xs={1}
               display="flex"
               justifyContent="center"
               alignItems="center">
               <LibraryMusicSharpIcon fontSize="large" />
+              pa
             </Grid>
           </Grid>
         </Grid>
@@ -68,7 +69,7 @@ export default async function MusicLayout({
          * TAB NAV
          */}
         <Grid xs={12}>
-          <TabNavigation />
+          <TabNavigation pages={PAGES} />
         </Grid>
         {/**
          * TAB NAV

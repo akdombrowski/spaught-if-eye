@@ -1,13 +1,13 @@
 "use client";
 import "client-only";
 
-import Link from "next/link";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
 import type { ElementType, MouseEvent, SyntheticEvent } from "react";
-import { forwardRef, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import type { PageByPathnameType } from "~/types/pages";
+import type { Route } from "next";
 
 interface LinkTabProps {
   href: string;
@@ -34,19 +34,14 @@ export const samePageLinkNavigation = (
   return true;
 };
 
-const pages = {
-  topTracks: "/top-tracks",
-  search: "/search",
-  home: "/",
-};
-
-export default function TabNavigation() {
+export default function TabNavigation(props: { pages: PageByPathnameType }) {
+  const { pages } = props;
   const router = useRouter();
-  const [value, setValue] = useState("topTracks");
+  const [value, setValue] = useState("/top-tracks");
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     console.log("handleChange");
     setValue(newValue);
-    router.push(pages[newValue]);
+    router.push(newValue as Route);
   };
   return (
     <Tabs
@@ -54,9 +49,10 @@ export default function TabNavigation() {
       onChange={handleChange}
       variant="fullWidth"
       aria-label="tabs to navigate to different pages">
-      <Tab value="topTracks" label="Top Tracks" />
+      <Tab value="/top-tracks" label={pages["/top-tracks"]!.title} />
 
-      <Tab value="search" label="Search" />
+      <Tab value="/search" label={pages["/search"]!.title} />
+      <Tab value="/videos" label={pages["/videos"]!.title} />
       {/* <Tab value="home" label="Home" /> */}
     </Tabs>
   );

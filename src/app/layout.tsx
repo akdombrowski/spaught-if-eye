@@ -10,6 +10,9 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "~/styles/theme";
+
+import { WebVitals } from "~/components/WebVitals";
+
 /**
  * https://nextjs.org/docs/app/building-your-application/optimizing/third-party-libraries#google-third-parties
  */
@@ -43,7 +46,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             {children}
           </ThemeProvider>
         </AppRouterCacheProvider>
-        {/* <GoogleTagManager gtmId="GTM-XYZ" /> */}
+        <WebVitals />
+        <GoogleTagManager gtmId="GTM-MVQJ5ZB8" />
       </body>
     </html>
   );
