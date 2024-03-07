@@ -96,8 +96,11 @@ export default function SearchForm() {
         onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={1} width="100%">
           <Grid xs={12}>
-            <LightTooltip title="name of the track (doesn't work with 'that song that goes uhn tiss uhn tiss uhn tiss' ... wait... that kinda does">
-              <Typography fontSize=".9rem" fontWeight="light">
+            <LightTooltip title="Does not work with 'that song that goes uhn tiss uhn tiss uhn tiss'.   Wait... that kinda does.">
+              <Typography
+                fontSize=".75rem"
+                fontWeight="light"
+                paddingLeft=".5rem">
                 Song Name
               </Typography>
             </LightTooltip>
