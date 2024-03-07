@@ -21,7 +21,7 @@ export const search = async ({
   searchRequest,
 }: {
   searchRequest: SpotifySearchReq;
-}): Promise<SpotifySearchTypes> => {
+}): Promise<SpotifySearchRes> => {
   const session: Session | null = await auth();
   const accessToken = session?.accessToken as string;
   const accessTokenUpdatedAt = session?.accessTokenUpdatedAt as number;
@@ -88,11 +88,12 @@ export const search = async ({
   headers.append("Authorization", `Bearer ${accessToken}`);
   const res = await fetch(url, {
     headers,
+    next: { revalidate: 1000 },
   });
 
   if (res.ok) {
-    const topTracksRes = (await res.json()) as SpotifySearchTypes;
-    return topTracksRes;
+    const searchRes = (await res.json()) as SpotifySearchRes;
+    return searchRes;
   } else {
     throw new Error("response not ok", {
       cause: {

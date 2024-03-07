@@ -3,11 +3,11 @@
  */
 export interface SpotifySearchReq {
   q: { query: string; filters: SpotifySearchQueryFilters };
-  type: SpotifySearchTypes[];
+  type: keyof SpotifySearchTypes;
   market?: string;
   limit?: number;
   offset?: number;
-  include_external: string;
+  include_external?: string;
 }
 
 export const enum SpotifySearchFilterTag {
@@ -32,7 +32,7 @@ export interface SpotifySearchQueryFilters {
   genre?: string;
 }
 
-export enum SpotifySearchTypes {
+export const SpotifySearchTypes = {
   album = "album",
   artist = "artist",
   playlist = "playlist",
@@ -40,7 +40,7 @@ export enum SpotifySearchTypes {
   show = "show",
   episode = "episode",
   audiobook = "audiobook",
-}
+};
 
 export interface SpotifySearchRes {
   tracks: Tracks;
