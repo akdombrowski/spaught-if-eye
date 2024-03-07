@@ -15,6 +15,7 @@ const PAGES: PageByPathnameType = {
   "/top-tracks": { title: "Top Tracks" },
   "/search": { title: "Search" },
   "/videos": { title: "Videos" },
+  "/api/auth/signout": { title: "sign out" },
   "/": { title: "Home" },
 };
 

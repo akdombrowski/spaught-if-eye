@@ -78,6 +78,38 @@ const StyledTab = styled((props: StyledTabProps) => <Tab {...props} />)(
     },
   }),
 );
+const SignOutTab = styled((props: StyledTabProps) => <Tab {...props} />)(
+  ({ theme }) => ({
+    "textTransform": "uppercase",
+    // "typography": theme.typography.body1,
+    "fontWeight": theme.typography.fontWeightLight,
+    // "fontSize": theme.typography.pxToRem(1),
+    "fontSize": "1.25rem",
+    // "marginRight": theme.spacing(1),
+    // "backgroundColor": "transparent",
+    "color": "white",
+    "padding": 0,
+    "margin": 0,
+    "&.MuiButtonBase-root": {
+      fontSize: ".75rem",
+      color: "white",
+      backgroundColor: "rgba(255, 2, 200, 0.08)",
+      borderWidth: "1px",
+      borderStyle: "solid",
+      borderColor: "rgba(255, 2, 255, 0.1)",
+    },
+    "&.Mui-selected": {
+      fontSize: ".8rem",
+      fontWeight: theme.typography.fontWeightBold,
+      color: theme.palette.secondary,
+      backgroundColor: "rgba(255, 255, 255, 0.05)",
+    },
+    "&.Mui-focusVisible": {
+      fontSize: theme.typography.pxToRem(1),
+      // backgroundColor: "rgba(255, 255, 255, 0.5)",
+    },
+  }),
+);
 
 export const samePageLinkNavigation = (
   event: MouseEvent<HTMLAnchorElement, MouseEvent>,
@@ -100,7 +132,6 @@ export default function TabNavigation(props: { pages: PageByPathnameType }) {
   const router = useRouter();
   const [value, setValue] = useState("/top-tracks");
   const handleChange = (event: SyntheticEvent, newValue: string) => {
-    console.log("handleChange");
     setValue(newValue);
     router.push(newValue as Route);
   };
@@ -114,6 +145,10 @@ export default function TabNavigation(props: { pages: PageByPathnameType }) {
 
       <StyledTab value="/search" label={pages["/search"]!.title} />
       <StyledTab value="/videos" label={pages["/videos"]!.title} />
+      <SignOutTab
+        value="/api/auth/signout"
+        label={pages["/api/auth/signout"]!.title}
+      />
       {/* <Tab value="home" label="Home" /> */}
     </StyledTabs>
   );

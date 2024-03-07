@@ -43,7 +43,7 @@ export default function SearchForm() {
   } = useForm<SearchFormData>({
     defaultValues: {
       // TextField: "I Gotsta Get Paid",
-      keywords: "keywords",
+      keywords: "",
       artist: "artist",
       album: "album",
       genre: "genre",
