@@ -40,27 +40,15 @@ export default async function TopTracks(_props) {
   }
 
   return (
-    <Grid container spacing={3}>
-      {/**
-       *
-       * SpotifyTool
-       */}
-      <Grid id="SpotifyToolGridRow" xs={12}>
-        <Grid
-          id="SpotifyToolGridContainer"
-          container
-          justifyContent="center"
-          alignItems="center"
-          spacing={6}>
-          {topTracks?.length && (
-            <SpotifyTool topTracks={topTracks} session={session} />
-          )}
-        </Grid>
-      </Grid>
-      {/**
-       * SpotifyTool
-       *
-       */}
+    <Grid
+      id="SpotifyToolGridContainer"
+      container
+      justifyContent="center"
+      alignItems="center"
+      spacing={6}>
+      {topTracks?.length && (
+        <SpotifyTool topTracks={topTracks} session={session} />
+      )}
     </Grid>
   );
 }

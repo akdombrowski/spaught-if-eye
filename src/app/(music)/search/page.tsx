@@ -18,30 +18,13 @@ export default async function Search(_props) {
   }
 
   return (
-    <Container maxWidth={false}>
-      <Grid container spacing={6}>
-        <Grid
-          id="signOutBtnGridRow"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          xs={12}>
-          <Grid
-            container
-            justifyContent="center"
-            alignItems="center"
-            spacing={6}>
-            <SearchForm />
-          </Grid>
-        </Grid>
-        <Grid
-          xs={12}
-          display="flex"
-          justifyContent="center"
-          alignItems="center">
-          <SignOutButton />
-        </Grid>
-      </Grid>
-    </Container>
+    <Grid
+      id="searchForm"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      xs={12}>
+      <SearchForm />
+    </Grid>
   );
 }

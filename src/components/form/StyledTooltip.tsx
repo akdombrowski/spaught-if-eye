@@ -3,12 +3,14 @@ import Tooltip, {
   type TooltipProps,
   tooltipClasses,
 } from "@mui/material/Tooltip";
+import type { ReactElement, ReactNode } from "react";
 
 export const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: theme.palette.background,
+    fontWeight: ".8rem",
     color: theme.palette.primary,
     boxShadow: theme.shadows[1],
     fontSize: 11,
@@ -39,4 +41,13 @@ export const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     border: "1px solid #dadde9",
   },
 }));
+
+export interface StyledTooltipProps {
+  tooltipType: "light" | "bootstrap" | "html";
+  title: string;
+  children?: ReactElement;
+  tooltipProps?: TooltipProps;
+  popperClassName?: string;
+}
+
 export default LightTooltip;

@@ -59,13 +59,15 @@ const StyledTab = styled((props: StyledTabProps) => <Tab {...props} />)(
     // "marginRight": theme.spacing(1),
     // "backgroundColor": "transparent",
     "color": "white",
+    "padding": 0,
+    "margin": 0,
     "&.MuiButtonBase-root": {
-      fontSize: "1.25rem",
+      fontSize: ".75rem",
       color: "white",
       backgroundColor: "rgba(255, 255, 255, 0.02)",
     },
     "&.Mui-selected": {
-      fontSize: "1.5rem",
+      fontSize: ".8rem",
       fontWeight: theme.typography.fontWeightBold,
       color: theme.palette.secondary,
       backgroundColor: "rgba(255, 255, 255, 0.05)",

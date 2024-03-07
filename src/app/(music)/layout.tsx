@@ -27,13 +27,26 @@ export default async function MusicLayout({
   return (
     <Container maxWidth={false}>
       <Grid container justifyContent="center" alignItems="center" spacing={6}>
-        <Grid container spacing={3} justifyContent="center" alignItems="center">
+        <Grid container spacing={1} justifyContent="center" alignItems="center">
+          {/**
+           *
+           * TAB NAV
+           */}
+          <Grid xs={12} width="100vw">
+            <TabNavigation pages={PAGES} />
+          </Grid>
+          {/**
+           * TAB NAV
+           *
+           */}
+
           {/**
            *
            * HEADER
            */}
           <Grid
             display="flex"
+            marginRight="-5rem"
             justifyContent="center"
             alignItems="center"
             xs={10}>
@@ -73,18 +86,6 @@ export default async function MusicLayout({
           </Grid>
           {/**
            * HEADER
-           *
-           */}
-
-          {/**
-           *
-           * TAB NAV
-           */}
-          <Grid xs={12} paddingBottom="2rem">
-            <TabNavigation pages={PAGES} />
-          </Grid>
-          {/**
-           * TAB NAV
            *
            */}
         </Grid>

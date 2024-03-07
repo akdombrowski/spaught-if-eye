@@ -17,7 +17,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
-import LightTooltip from "./CustomTooltip";
+import { LightTooltip } from "./StyledTooltip";
 
 export interface SearchFormData {
   keywords: string;
@@ -86,53 +86,56 @@ export default function SearchForm() {
   };
 
   return (
-    <Box
-      component="form"
-      id="searchForm"
-      noValidate
-      onSubmit={handleSubmit(onSubmit)}>
-      <Grid container columns={12} spacing={6}>
-        <Grid xs={12}>
-          <LightTooltip title="song name">
-            <Typography>
-              {
-                "name of the track (doesn't work with 'that song that goes uhn tiss uhn tiss uhn tiss' ... wait... that kinda does)"
-              }
-            </Typography>
-          </LightTooltip>
-          <Controller
-            name="keywords"
-            control={control}
-            rules={{ required: false }}
-            render={({ field }) => {
-              return (
-                <TextField
-                  id="keywordsInput"
-                  label="keywords"
-                  variant="filled"
-                  placeholder="keywords"
-                  {...field}
-                />
-              );
-            }}
-          />
-        </Grid>
-        <Grid xs={12}>
-          <FormControl>
-            <FilledInput
-              id="my-input"
-              fullWidth
-              inputProps={{ form: "searchForm" }}
-              type="submit"
-              aria-describedby="my-helper-text"
+    <Grid container spacing={6}>
+      <Box
+        component="form"
+        id="searchForm"
+        paddingBottom="3rem"
+        width="100vw"
+        noValidate
+        onSubmit={handleSubmit(onSubmit)}>
+        <Grid container spacing={1} width="100%">
+          <Grid xs={12}>
+            <LightTooltip title="name of the track (doesn't work with 'that song that goes uhn tiss uhn tiss uhn tiss' ... wait... that kinda does">
+              <Typography fontSize=".9rem" fontWeight="light">
+                Song Name
+              </Typography>
+            </LightTooltip>
+          </Grid>
+          <Grid xs={12}>
+            <Controller
+              name="keywords"
+              control={control}
+              rules={{ required: false }}
+              render={({ field }) => {
+                return (
+                  <TextField
+                    id="keywordsInput"
+                    label="keywords to search"
+                    variant="filled"
+                    fullWidth
+                    {...field}
+                  />
+                );
+              }}
             />
-            <FormHelperText id="my-helper-text">
-              We&apos;ll never share your email.
-            </FormHelperText>
-          </FormControl>
+          </Grid>
         </Grid>
-      </Grid>
-    </Box>
+        <Grid xs={12} component={FormControl}>
+          <Button
+            id="my-input"
+            fullWidth
+            variant="contained"
+            color="secondary"
+            // inputProps={{ form: "searchForm" }}
+            form="searchForm"
+            type="submit"
+            aria-describedby="my-helper-text">
+            Search
+          </Button>
+        </Grid>
+      </Box>
+    </Grid>
 
     /* <TextField
         id="artistInput"
