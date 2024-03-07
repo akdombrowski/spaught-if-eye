@@ -7,10 +7,11 @@ import Tabs, { type TabsOwnProps } from "@mui/material/Tabs";
 import Tab, { TabOwnProps } from "@mui/material/Tab";
 import { styled } from "@mui/material/styles";
 import type { MouseEvent, SyntheticEvent } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { PageByPathnameType } from "~/types/pages";
 import type { Route } from "next";
+import { usePathname } from "next/navigation";
 
 interface StyledTabsProps extends TabsOwnProps {
   onChange: (event: SyntheticEvent, newValue: string) => void;
@@ -80,6 +81,7 @@ const StyledTab = styled((props: StyledTabProps) => <Tab {...props} />)(
 );
 const SignOutTab = styled((props: StyledTabProps) => <Tab {...props} />)(
   ({ theme }) => ({
+    "maxWidth": "5vw",
     "textTransform": "uppercase",
     // "typography": theme.typography.body1,
     "fontWeight": theme.typography.fontWeightLight,
@@ -129,11 +131,19 @@ export const samePageLinkNavigation = (
 
 export default function TabNavigation(props: { pages: PageByPathnameType }) {
   const { pages } = props;
+  const pathname = usePathname();
   const router = useRouter();
   const [value, setValue] = useState("/top-tracks");
+  useEffect(() => {
+    if (pathname !== value) {
+      setValue(pathname);
+    }
+  }, [pathname, value]);
   const handleChange = (event: SyntheticEvent, newValue: string) => {
-    setValue(newValue);
-    router.push(newValue as Route);
+    if (pathname !== newValue) {
+      setValue(newValue);
+      router.push(newValue as Route);
+    }
   };
   return (
     <StyledTabs

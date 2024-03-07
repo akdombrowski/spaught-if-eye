@@ -50,7 +50,18 @@ export async function POST(request: NextRequest) {
   console.log("");
   console.log("get form data");
   // const formData = await request.formData();
-  const body = await request.json();
+  const body = (await request.json()) as {
+    keywords: string;
+    artist: string;
+    album: string;
+    genre: string;
+    year: number;
+    hipster: boolean;
+    newRelease: boolean;
+    recent: boolean;
+  };
+  const { keywords, artist, album, genre, year, hipster, newRelease, recent } =
+    body;
   console.log("");
   console.log("");
   // console.log("form data:");
@@ -61,22 +72,26 @@ export async function POST(request: NextRequest) {
   console.log(body);
   console.log("");
   console.log("");
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-  const keywords = body.keywords;
   console.log("keywords");
   console.log(keywords);
   console.log("");
   console.log("");
   console.log("");
-  const q = keywords;
-  const type = "track";
+  const query = keywords;
+  const q = { query };
+  let searchType = "track";
+  if (artist) {
+    searchType = "artist";
+  } else if (album) {
+    searchType = "album";
+  }
   // const market = formData.get("market");
   // const limit = formData.get("limit");
   // const offset = formData.get("offset");
   // const include_external = formData.get("include_external");
   const searchRequest: SpotifySearchReq = {
     q,
-    type,
+    searchType,
   };
   const searchResults: SpotifySearchRes | null = await search({
     searchRequest,
@@ -84,5 +99,5 @@ export async function POST(request: NextRequest) {
   // if (!topTracks) {
   //   console.error("no top tracks");
   // }
-  return NextResponse.json({ success: "yest" }, { status: 200 });
+  return NextResponse.json({ success: "yes" }, { status: 200 });
 }

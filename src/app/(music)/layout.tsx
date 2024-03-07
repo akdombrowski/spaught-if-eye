@@ -10,6 +10,7 @@ import TabNavigation from "~/components/pageHeader/TabNavigation";
 import PageTitle from "~/components/pageHeader/PageTitle";
 
 import { auth } from "~/auth";
+import { Box } from "@mui/material";
 
 const PAGES: PageByPathnameType = {
   "/top-tracks": { title: "Top Tracks" },
@@ -26,8 +27,8 @@ export default async function MusicLayout({
 }) {
   const session = await auth();
   return (
-    <Container maxWidth={false}>
-      <Grid container justifyContent="center" alignItems="center" spacing={6}>
+    <Container maxWidth={false} disableGutters>
+      <Grid container justifyContent="center" alignItems="center" spacing={1}>
         <Grid container spacing={1} justifyContent="center" alignItems="center">
           {/**
            *
@@ -43,23 +44,23 @@ export default async function MusicLayout({
 
           {/**
            *
-           * HEADER
+           * PAGE TITLE
            */}
           <Grid
+            xs={12}
             display="flex"
-            marginRight="-5rem"
             justifyContent="center"
             alignItems="center"
-            xs={10}>
+            sx={{ backgroundColor: "rgba(0, 0, 0, 0.1)" }}>
             <Grid
               container
-              spacing={1}
+              spacing={6}
               alignItems="center"
               justifyContent="center">
               <Grid
-                xs={11}
+                xs={2}
                 display="flex"
-                justifyContent="center"
+                justifyContent="flex-start"
                 alignItems="center">
                 {session?.user?.image && (
                   <Avatar
@@ -68,25 +69,20 @@ export default async function MusicLayout({
                   />
                 )}
               </Grid>
-              <PageTitle pages={PAGES} />
+              <Grid xs={8}>
+                <PageTitle pages={PAGES} />
+              </Grid>
               <Grid
-                xs={1}
+                xs={2}
                 display="flex"
-                justifyContent="center"
+                justifyContent="flex-end"
                 alignItems="center">
                 <LibraryMusicSharpIcon fontSize="large" />
               </Grid>
             </Grid>
           </Grid>
-          <Grid
-            xs={2}
-            display="flex"
-            justifyContent="center"
-            alignItems="center">
-            <SignOutButton />
-          </Grid>
           {/**
-           * HEADER
+           * PAGE TITLE
            *
            */}
         </Grid>

@@ -2,8 +2,8 @@
  * Types for Using Spotify's Search Endpoint
  */
 export interface SpotifySearchReq {
-  q: { query: string; filters: SpotifySearchQueryFilters };
-  type: keyof SpotifySearchTypes;
+  q: { query: string; filters?: SpotifySearchQueryFilters };
+  searchType: keyof SpotifySearchTypes;
   market?: string;
   limit?: number;
   offset?: number;

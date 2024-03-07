@@ -27,7 +27,7 @@ export interface SearchFormData {
   year?: number;
   recent?: boolean;
   hipster?: SpotifySearchFilterTag.hipster | boolean;
-  new?: SpotifySearchFilterTag.new | boolean;
+  newRelease?: SpotifySearchFilterTag.new | boolean;
 }
 export interface IFormInputs
   extends SpotifySearchQueryFilters,
@@ -44,12 +44,12 @@ export default function SearchForm() {
     defaultValues: {
       // TextField: "I Gotsta Get Paid",
       keywords: "",
-      artist: "artist",
-      album: "album",
-      genre: "genre",
+      artist: "",
+      album: "",
+      genre: "",
       year: 2024,
       hipster: false,
-      new: false,
+      newRelease: false,
       recent: false,
     },
   });
@@ -123,11 +123,10 @@ export default function SearchForm() {
         </Grid>
         <Grid xs={12} component={FormControl}>
           <Button
-            id="my-input"
+            id="Search"
             fullWidth
             variant="contained"
             color="secondary"
-            // inputProps={{ form: "searchForm" }}
             form="searchForm"
             type="submit"
             aria-describedby="my-helper-text">
