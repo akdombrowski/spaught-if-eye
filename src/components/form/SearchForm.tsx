@@ -1,4 +1,5 @@
 "use client";
+import "client-only";
 
 import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import type {
@@ -18,6 +19,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import { LightTooltip } from "./StyledTooltip";
+import SearchButton from "./SearchBtn";
 
 export interface SearchFormData {
   keywords: string;
@@ -130,9 +132,8 @@ export default function SearchForm() {
             fullWidth
             variant="contained"
             color="secondary"
-            form="searchForm"
             type="submit"
-            aria-describedby="my-helper-text">
+            aria-describedby="search submit button">
             Search
           </Button>
         </Grid>
