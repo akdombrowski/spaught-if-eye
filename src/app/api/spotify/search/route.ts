@@ -1,9 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { redirect } from "next/navigation";
 import { auth } from "~/auth";
-import search from "~/spotify/search";
-import type { SpotifySearchRes, SpotifySearchReq } from "~/types/search";
-import SearchResponse from "~/types/search";
 
 export async function GET(request: NextRequest) {
   const session = await auth();
@@ -85,17 +82,24 @@ export async function POST(request: NextRequest) {
   } else if (album) {
     searchType = "album";
   }
+  console.log("");
+  console.log("");
+  console.log("searchType");
+  console.log(searchType);
+  console.log("");
+  console.log("");
+  console.log("");
   // const market = formData.get("market");
   // const limit = formData.get("limit");
   // const offset = formData.get("offset");
   // const include_external = formData.get("include_external");
-  const searchRequest: SpotifySearchReq = {
-    q,
-    searchType,
-  };
-  const searchResults: SpotifySearchRes | null = await search({
-    searchRequest,
-  });
+  // const searchRequest: SpotifySearchReq = {
+  //   q,
+  //   searchType,
+  // };
+  // const searchResults: SpotifySearchRes | null = await search({
+  //   searchRequest,
+  // });
   // if (!topTracks) {
   //   console.error("no top tracks");
   // }

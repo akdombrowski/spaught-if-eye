@@ -1,4 +1,3 @@
-import type { JWT } from "@auth/core/jwt";
 import type {
   NextAuthConfig,
   DefaultSession,
@@ -8,6 +7,7 @@ import type {
   Profile,
 } from "next-auth";
 import NextAuth from "next-auth";
+import type { JWT } from "next-auth/jwt";
 // import SpotifyProvider from "next-auth/providers/spotify";
 import SpotifyProvider from "@auth/core/providers/spotify";
 import type { SpotifyProfile } from "@auth/core/providers/spotify";
@@ -31,15 +31,18 @@ const DEBUG_CALLBACKS = false;
  * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
  */
 declare module "next-auth" {
-  interface Session extends DefaultSession {
+  export interface Session extends DefaultSession {
     accessToken: string | undefined | JWT;
-    accessTokenUpdatedAt: number | string;
-    user: {
+    accessTokenUpdatedAt: number | undefined | string;
+    refreshToken: string | undefined | JWT;
+    refreshTokenUpdatedAt: number | undefined | string;
+    user?: {
       id: string;
       // ...other properties
       // role: UserRole;
     } & DefaultSession["user"];
   }
+
   interface Profile extends SpotifyProfile {
     accessToken: string | undefined | JWT;
     accessTokenUpdatedAt: number | string;
@@ -182,7 +185,7 @@ export const authConfig: NextAuthConfig = {
         token.refreshTokenUpdatedAt = Date();
       }
 
-      return token;
+      return { token };
     },
     // session: async (props) => {
     //   const session = props.session;
@@ -198,10 +201,10 @@ export const authConfig: NextAuthConfig = {
     }): Promise<Session> => {
       const sesh = {
         ...session,
-        accessToken: token.accessToken,
-        accessTokenUpdatedAt: Date(),
-        refreshToken: token.accessToken,
-        refreshTokenUpdatedAt: Date(),
+        accessToken: token?.accessToken,
+        accessTokenUpdatedAt: token?.accessToken ?? Date(),
+        refreshToken: token?.refreshToken,
+        refreshTokenUpdatedAt: token?.refreshToken ?? Date(),
       } as Session;
       //
 
