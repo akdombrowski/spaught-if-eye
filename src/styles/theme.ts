@@ -8,13 +8,13 @@ import {
 } from "@mui/material/styles";
 import { type PaletteMode } from "@mui/material";
 
-import { Roboto } from "next/font/google";
+// import { Roboto } from "next/font/google";
 
-const roboto = Roboto({
-  weight: ["300", "400", "500", "700"],
-  subsets: ["latin"],
-  display: "swap",
-});
+// const roboto = Roboto({
+//   weight: ["300", "400", "500", "700"],
+//   subsets: ["latin"],
+//   display: "swap",
+// });
 declare module "@mui/material/styles" {
   interface Theme {
     status: {
@@ -112,7 +112,8 @@ export const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "Roboto",
+    // fontFamily: "Roboto",
+
     fontWeightBold: 1000,
     fontWeightMedium: 700,
     h1: {

@@ -1,43 +1,15 @@
-import { Button, Container, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import Avatar from "@mui/material/Avatar";
-import LibraryMusicSharpIcon from "@mui/icons-material/LibraryMusicSharp";
-import SignOutButton from "~/components/SignOutButton";
 import SpotifyTool from "~/components/SpotifyTool";
-import { auth } from "~/auth";
 import getTopTracks from "~/spotify/getTopTracks";
-import { redirect } from "next/navigation";
-import Link from "next/link";
+import type { Track } from "~/types/SpotifyAPI.d.ts";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const DEBUG = false;
 
-const red = async () => {
-  try {
-    const topTracks = await getTopTracks();
-    if (DEBUG) {
-      console.log();
-      console.log();
-      console.log();
-      console.log("topTracks");
-      console.log(topTracks);
-      console.log();
-      console.log();
-      console.log();
-    }
-    return topTracks;
-  } catch (error) {
-    console.error("couldn't get tracks:", error);
-    return null;
-  }
-};
+const topTracks: { topTracks: Track[] | null } = await getTopTracks();
 
 export default async function TopTracks(_props) {
-  const topTracks = await red();
-  const session = await auth();
-
-  if (!topTracks || !session) {
-    redirect("/api/auth/signin");
-  }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
 
   return (
     <Grid
@@ -46,9 +18,7 @@ export default async function TopTracks(_props) {
       justifyContent="center"
       alignItems="center"
       spacing={6}>
-      {topTracks?.length && (
-        <SpotifyTool topTracks={topTracks} session={session} />
-      )}
+      {topTracks?.length && <SpotifyTool topTracks={topTracks} />}
     </Grid>
   );
 }

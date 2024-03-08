@@ -1,24 +1,24 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { type Track, type SpotifyAPIUserTopResponse } from "~/types/SpotifyAPI";
-import { auth } from "~/auth";
+import { type NextRequest, NextResponse } from "next/server";
 import { redirect } from "next/navigation";
+import { auth } from "~/auth";
 
 const DEBUG = false;
 
-export default async function getTopTracks(): Promise<{
-  topTracks: Track[] | null;
-}> {
+export async function GET(request: NextRequest) {
   const session = await auth();
   if (!session) {
     console.error("need to sign in");
-    redirect("/api/auth/signin");
+    const signInURL = new URL("/api/auth/signin", request.nextUrl);
+    redirect(signInURL.href);
   }
 
   const accessToken = session.accessToken as string;
   const accessTokenUpdatedAt = session.accessTokenUpdatedAt as number;
 
   if (!accessToken) {
-    console.log("no access token to use with spotify api");
-    return { topTracks: null };
+    throw new Error("No token");
   }
 
   const headers = new Headers();
@@ -38,7 +38,7 @@ export default async function getTopTracks(): Promise<{
     const topTracks = topTracksRes?.items;
     if (!topTracks) {
       console.error("no tracks");
-      return { topTracks: null };
+      throw new Error("No tracks");
     }
 
     if (DEBUG) {
@@ -49,17 +49,22 @@ export default async function getTopTracks(): Promise<{
     if (topTracks.length) {
       if (topTracks[0]?.type === "album") {
         console.error("Got albums instead of tracks back");
-        console.error(topTracks);
+        throw new Error("Got albums instead of tracks back", {
+          cause: topTracks,
+        });
       }
     }
-
-    return { topTracks };
+    return NextResponse.json({ topTracks }, { status: 200 });
   } else {
     const status = res.status;
     const statusText = res.statusText;
     console.error("failed to fetch top tracks from spotify api");
-    console.error("Unauthorized to use spotify api to fetch top tracks");
-    console.error({ accessToken, accessTokenUpdatedAt, status, statusText });
-    return { topTracks: null };
+    return NextResponse.json(
+      {
+        error: "Unauthorized to use spotify api to fetch top tracks",
+        cause: { accessToken, accessTokenUpdatedAt, status, statusText },
+      },
+      { status: 500 },
+    );
   }
 }

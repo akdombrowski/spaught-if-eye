@@ -1,5 +1,5 @@
 "use client";
-// import "client-only";
+import "client-only";
 
 import { useReportWebVitals } from "next/web-vitals";
 

@@ -2,14 +2,11 @@ import Grid from "@mui/material/Unstable_Grid2";
 import Tracks from "./Tracks";
 
 import type { Track } from "~/types/SpotifyAPI";
-import type { Session } from "next-auth";
 
 export default function SpotifyTool({
   topTracks,
-  session,
 }: {
-  topTracks: Track[];
-  session: Session;
+  topTracks: Track[] | null;
 }) {
   return (
     // <Container maxWidth={false}>

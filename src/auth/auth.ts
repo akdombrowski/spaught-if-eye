@@ -96,6 +96,42 @@ export const authConfig: NextAuthConfig = {
         console.log("credentials:", credentials);
         console.log();
         console.log("***************");
+
+        if (user) {
+          // right now user has id, name, email (*can't trust*), image
+          console.log();
+          console.log("***************");
+          console.log("user");
+          console.log(user);
+          console.log("***************");
+          console.log();
+        }
+
+        if (profile) {
+          console.log();
+          console.log("***************");
+          console.log("profile");
+          console.log(profile);
+          console.log("***************");
+          console.log();
+        }
+
+        if (account) {
+          console.log();
+          console.log("***************");
+          console.log("account");
+          console.log(account);
+          console.log("***************");
+          console.log();
+        }
+
+        if (email) {
+          console.log();
+          console.log("***************");
+          console.log("email:", email);
+          console.log("***************");
+          console.log();
+        }
         console.log();
       }
 
@@ -221,6 +257,16 @@ export const authConfig: NextAuthConfig = {
         console.log();
         console.log("token:", token);
         console.log();
+
+        if (user) {
+          // right now user has id, name, email (*can't trust*), image
+          console.log();
+          console.log("***************");
+          console.log("user");
+          console.log(user);
+          console.log("***************");
+          console.log();
+        }
         console.log("****************");
         console.log();
       }

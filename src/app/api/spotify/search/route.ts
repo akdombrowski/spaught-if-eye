@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { type NextRequest, NextResponse } from "next/server";
 import { redirect } from "next/navigation";
 import { auth } from "~/auth";

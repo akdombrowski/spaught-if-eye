@@ -12,6 +12,9 @@ export function onPlayerReady(event) {
 }
 
 export const getPlayer = (videoid: string) => {
+  console.log("====================================");
+  console.log("videoid:", videoid);
+  console.log("====================================");
   return document.querySelector("lite-youtube");
 };
 // 5. The API calls this function when the player's state changes.

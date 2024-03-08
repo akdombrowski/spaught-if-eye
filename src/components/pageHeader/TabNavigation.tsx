@@ -1,10 +1,8 @@
 "use client";
 import "client-only";
 
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import Tabs, { type TabsOwnProps } from "@mui/material/Tabs";
-import Tab, { TabOwnProps } from "@mui/material/Tab";
+import Tab, { type TabOwnProps } from "@mui/material/Tab";
 import { styled } from "@mui/material/styles";
 import type { MouseEvent, SyntheticEvent } from "react";
 import { useEffect, useState } from "react";
@@ -17,26 +15,7 @@ interface StyledTabsProps extends TabsOwnProps {
   onChange: (event: SyntheticEvent, newValue: string) => void;
 }
 
-const StyledTabs = styled((props: StyledTabsProps) => (
-  <Tabs
-    {...props}
-    // TabIndicatorProps={{
-    //   children: (
-    //     <Box
-    //       height="100%"
-    //       width="100%"
-    //       my={4}
-    //       display="flex"
-    //       alignItems="center"
-    //       gap={4}
-    //       p={2}
-    //       sx={{ border: "8px solid green" }}
-    //       className="MuiTabs-indicatorSpan"
-    //     />
-    //   ),
-    // }}
-  />
-))({
+const StyledTabs = styled((props: StyledTabsProps) => <Tabs {...props} />)({
   "& .MuiTabs-root": {},
   "& .MuiTabs-indicator": {
     height: ".2rem",

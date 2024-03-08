@@ -5,12 +5,10 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Unstable_Grid2";
 import Avatar from "@mui/material/Avatar";
 import LibraryMusicSharpIcon from "@mui/icons-material/LibraryMusicSharp";
-import SignOutButton from "~/components/SignOutButton";
 import TabNavigation from "~/components/pageHeader/TabNavigation";
 import PageTitle from "~/components/pageHeader/PageTitle";
 
 import { auth } from "~/auth";
-import { Box } from "@mui/material";
 
 const PAGES: PageByPathnameType = {
   "/top-tracks": { title: "Top Tracks" },

@@ -4,22 +4,17 @@ import "client-only";
 import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import type {
   SpotifySearchReq,
+  SpotifySearchRes,
   SpotifySearchQueryFilters,
   SpotifySearchFilterTag,
 } from "~/types/search";
 import Grid from "@mui/material/Unstable_Grid2";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Input from "@mui/material/Input";
-import FilledInput from "@mui/material/FilledInput";
-import FormHelperText from "@mui/material/FormHelperText";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
 import { LightTooltip } from "./StyledTooltip";
-import SearchButton from "./SearchBtn";
 
 export interface SearchFormData {
   keywords: string;
@@ -39,9 +34,9 @@ export default function SearchForm() {
   const {
     handleSubmit,
     control,
-    reset,
-    register,
-    formState: { errors },
+    // reset,
+    // register,
+    // formState: { errors },
   } = useForm<SearchFormData>({
     defaultValues: {
       // TextField: "I Gotsta Get Paid",
@@ -71,20 +66,32 @@ export default function SearchForm() {
       },
       body: JSON.stringify(formData), // body data type must match "Content-Type" header
     };
-    const res = await fetch("/api/spotify/search", options);
-    const body = await res.json();
-    console.log("");
-    console.log("");
-    console.log("");
-    console.log("data submitted");
+    console.log("====================================");
+    console.log("formData");
     console.log(formData);
-    console.log("");
-    console.log("");
-    console.log("response body");
-    console.log(body);
-    console.log("");
-    console.log("");
-    console.log("");
+    console.log("====================================");
+    const res = await fetch("/api/spotify/search", options);
+    if (res.ok) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const body = await res.json();
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      if (body.tracks && body.artists) {
+        const searchRes = body as SpotifySearchRes;
+
+        console.log("");
+        console.log("");
+        console.log("");
+        console.log("data submitted");
+        console.log("");
+        console.log("");
+        console.log("response body");
+        console.log(searchRes);
+        console.log("");
+        console.log("");
+        console.log("");
+      }
+    }
   };
 
   return (
