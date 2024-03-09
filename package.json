@@ -8,11 +8,7 @@
     "dev": "dotenv -c -- next dev",
     "lint": "next lint",
     "start": "dotenv -c -- next start",
-    "tsc:test": "tsc --pretty",
-    "db:push": "dotenv -c -- drizzle-kit push:mysql --config=drizzle.config.ts",
-    "db:check": "dotenv -c -- drizzle-kit check:mysql --config=drizzle.config.ts",
-    "db:introspect": "dotenv -c -- drizzle-kit introspect:mysql --config=drizzle.config.ts",
-    "db:studio": "dotenv -c -- drizzle-kit studio --host localhost --port 3001 --verbose"
+    "tsc:test": "tsc --pretty"
   },
   "dependencies": {
     "@auth/core": "^0.28.0",

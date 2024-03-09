@@ -34,7 +34,6 @@
       "~/types/*": ["./src/types/*"],
       "~/auth-api/*": ["./src/app/api/auth/*"],
       "~/auth": ["./src/auth/auth.ts"],
-      "~/auth-spotify": ["src/auth/spotifyAuth"],
       "~/spotify/*": ["./src/spotify/actions/*"],
       "~/music/*": ["./src/(music)/*"]
     },
@@ -64,7 +63,8 @@
     "**/*.jsx",
     "**/*.cjs",
     "**/types/*d.ts",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "src/app/api/spotify/user/top-tracks/route.tee_ess.OLD"
   ],
   "exclude": ["node_modules"]
 }

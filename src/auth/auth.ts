@@ -17,12 +17,8 @@ import type { SpotifyProfile } from "@auth/core/providers/spotify";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { env } from "~/env";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { db } from "~/db";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { createTable } from "~/db/schema";
 
-const DEBUG_CALLBACKS = true;
+const DEBUG_CALLBACKS = false;
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -135,41 +131,6 @@ export const authConfig: NextAuthConfig = {
         console.log();
       }
 
-      // const userId = account?.userId;
-      // const accessToken = account?.access_token;
-      // if (userId && accessToken) {
-      //   const usersTokens = await db.query.tokens.findMany({
-      //     where: eq(users.id, userId),
-      //   });
-      //   if (DEBUG_CALLBACKS) {
-      //     console.log(`found tokens for user ${userId}`);
-      //     console.log(usersTokens);
-      //   }
-      //   if (usersTokens.length > 1) {
-      //     console.error("why does this user have more than one token???");
-      //     throw new Error("why does this user have more than one token???");
-      //   } else if (usersTokens.length) {
-      //     // const userToken = usersTokens[0];
-      //     await db
-      //       .update(tokens)
-      //       .set({ providerAccessToken: accessToken })
-      //       .where(eq(users.id, userId));
-      //     if (DEBUG_CALLBACKS) {
-      //       console.log("updated access token in tokens table");
-      //     }
-      //   } else {
-      //     await db.insert(tokens).values({
-      //       userId: userId,
-      //       providerAccessToken: accessToken,
-      //       provider: "spotify",
-      //       expires: new Date(1708896426 - 60 * 60 * 1000), // 1min early
-      //     });
-      //     if (DEBUG_CALLBACKS) {
-      //       console.log("updated access token in tokens table");
-      //     }
-      //   }
-      // }
-
       return true;
     },
     // jwt: async (props) => {
@@ -274,10 +235,6 @@ export const authConfig: NextAuthConfig = {
       return sesh;
     },
   },
-  //
-  //
-  //
-  // adapter: DrizzleAdapter(db, createTable),
   providers: [
     SpotifyProvider({
       clientId: env.SPOTIFY_CLIENT_ID,
@@ -285,6 +242,9 @@ export const authConfig: NextAuthConfig = {
       authorization:
         "https://accounts.spotify.com/authorize?scope=" +
         encodeURIComponent(scopes),
+      /**
+       * Seems to be bugged, can't specify scopes as a property
+       */
       // authorization: {
       //   url: "https://example.com/spotify",
       //   // url: "https://accounts.spotify.com/authorize/DIFFERENT=TRUE",
@@ -309,13 +269,6 @@ export const authConfig: NextAuthConfig = {
      */
   ],
 };
-
-/**
- * Wrapper for `getServerSession` so that you don't need to import the `authOptions` in every file.
- *
- * @see https://next-auth.js.org/configuration/nextjs
- */
-// export const getServerAuthSession = () => getServerSession(authOptions);
 
 // next-auth (authjs) v5
 export const {
