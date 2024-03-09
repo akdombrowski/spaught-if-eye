@@ -22,7 +22,7 @@ import { db } from "~/db";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { createTable } from "~/db/schema";
 
-const DEBUG_CALLBACKS = false;
+const DEBUG_CALLBACKS = true;
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -195,7 +195,7 @@ export const authConfig: NextAuthConfig = {
         console.log();
         console.log("account:", account);
         console.log();
-        console.log("token:", token);
+        console.log("JWT", token);
         console.log();
         console.log("****************");
         console.log();
@@ -221,7 +221,7 @@ export const authConfig: NextAuthConfig = {
         token.refreshTokenUpdatedAt = Date();
       }
 
-      return { token };
+      return token;
     },
     // session: async (props) => {
     //   const session = props.session;
@@ -253,9 +253,9 @@ export const authConfig: NextAuthConfig = {
         console.log();
         // console.log("props:", props);
         console.log();
-        console.log("session:", session);
+        console.log("SESSION:", session);
         console.log();
-        console.log("token:", token);
+        console.log("JWT:", token);
         console.log();
 
         if (user) {
