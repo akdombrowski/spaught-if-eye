@@ -16,7 +16,7 @@ export default async function getTopTracks(): Promise<GetTracksResponse> {
   const session = await auth();
   if (!session) {
     console.error("need to sign in");
-    redirect("/api/auth/signin");
+    redirect("/api/auth/signin/spotify");
   }
 
   const accessToken = session.accessToken as string;

@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
   const session = await auth();
   if (!session) {
     console.error("need to sign in");
-    const signInURL = new URL("/api/auth/signin", request.nextUrl);
+    const signInURL = new URL("/api/auth/signin/spotify", request.nextUrl);
     redirect(signInURL.href);
   }
 

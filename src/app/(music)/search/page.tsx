@@ -7,7 +7,7 @@ export default async function Search(_props) {
   const session = await auth();
 
   if (!session) {
-    redirect("/api/auth/signin");
+    redirect("/api/auth/signin/spotify");
   }
 
   return (
