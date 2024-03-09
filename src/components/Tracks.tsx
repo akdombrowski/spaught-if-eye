@@ -5,7 +5,7 @@ import type { Track } from "~/types/SpotifyAPI";
 import Artists from "./Artists";
 // import Link from "next/link";
 
-export default function TopTracks({ songs }: { songs: Track[] | null }) {
+export default function TopTracks({ songs }: { songs: Track[] }) {
   const tracks = songs?.map((song: Track, i: number) => {
     // const { name, preview_url, external_urls, duration_ms, artists } = song;
     return (

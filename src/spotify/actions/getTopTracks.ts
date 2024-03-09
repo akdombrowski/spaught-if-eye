@@ -4,9 +4,15 @@ import { redirect } from "next/navigation";
 
 const DEBUG = false;
 
-export default async function getTopTracks(): Promise<{
-  topTracks: Track[] | null;
-}> {
+export interface GetTracksResponse {
+  topTracks?: Track[] | null;
+  error?: {
+    msg: string;
+    [key: string]: string;
+  };
+}
+
+export default async function getTopTracks(): Promise<GetTracksResponse> {
   const session = await auth();
   if (!session) {
     console.error("need to sign in");
@@ -18,7 +24,7 @@ export default async function getTopTracks(): Promise<{
 
   if (!accessToken) {
     console.log("no access token to use with spotify api");
-    return { topTracks: null };
+    return { error: { msg: "no access token to use with spotify api" } };
   }
 
   const headers = new Headers();
@@ -28,38 +34,61 @@ export default async function getTopTracks(): Promise<{
   });
 
   if (res.ok) {
-    const topTracksRes = (await res.json()) as SpotifyAPIUserTopResponse;
+    const spotifySearchResBody =
+      (await res.json()) as SpotifyAPIUserTopResponse;
 
     if (DEBUG) {
-      console.log("spotify api response");
-      console.log(topTracksRes);
+      console.log("spotify api search response");
+      console.log(spotifySearchResBody);
     }
 
-    const topTracks = topTracksRes?.items;
-    if (!topTracks) {
-      console.error("no tracks");
-      return { topTracks: null };
+    const searchResultsItems = spotifySearchResBody?.items;
+    if (!searchResultsItems) {
+      console.error("no search results");
+
+      return { error: { msg: "no search results" } };
     }
 
     if (DEBUG) {
-      console.log("spotify api response topTracks");
-      console.log(topTracks);
+      console.log("spotify api search results items");
+      console.log(searchResultsItems);
     }
 
-    if (topTracks.length) {
-      if (topTracks[0]?.type === "album") {
+    if (searchResultsItems.length) {
+      if (searchResultsItems[0]?.type === "album") {
         console.error("Got albums instead of tracks back");
-        console.error(topTracks);
+        console.error(searchResultsItems);
+        console.error(spotifySearchResBody);
+        return {
+          error: {
+            msg: "no search results",
+            searchResultsItems: JSON.stringify(searchResultsItems),
+            spotifySearchResBody: JSON.stringify(spotifySearchResBody),
+          },
+        };
       }
-    }
 
-    return { topTracks };
+      const topTracks = searchResultsItems as Track[];
+      return { topTracks };
+    }
   } else {
     const status = res.status;
     const statusText = res.statusText;
     console.error("failed to fetch top tracks from spotify api");
     console.error("Unauthorized to use spotify api to fetch top tracks");
     console.error({ accessToken, accessTokenUpdatedAt, status, statusText });
-    return { topTracks: null };
+
+    return {
+      error: {
+        msg: "failed to fetch top tracks from spotify api",
+        params: JSON.stringify({
+          accessToken,
+          accessTokenUpdatedAt,
+          status,
+          statusText,
+        }),
+      },
+    };
   }
+  return { topTracks: null, error: { msg: "vurt?!???" } };
 }

@@ -1,20 +1,21 @@
-import Grid from "@mui/material/Unstable_Grid2";
 import Tracks from "./Tracks";
+import Grid from "@mui/material/Unstable_Grid2";
+import Typography from "@mui/material/Typography";
+import { type GetTracksResponse } from "../spotify/actions/getTopTracks";
 
-import type { Track } from "~/types/SpotifyAPI";
+export default function SpotifyTool({ topTracks, error }: GetTracksResponse) {
+  if (error) {
+    return (
+      <Grid container justifyContent="center" alignItems="center">
+        <Typography variant="h3">Error:</Typography>
+        <Typography variant="body1">{JSON.stringify(error)}</Typography>
+      </Grid>
+    );
+  }
 
-export default function SpotifyTool({
-  topTracks,
-}: {
-  topTracks: Track[] | null;
-}) {
   return (
-    // <Container maxWidth={false}>
-
     <Grid container justifyContent="center" alignItems="center">
       <Grid xs={12}>{topTracks && <Tracks songs={topTracks} />}</Grid>
     </Grid>
-
-    // </Container>
   );
 }
