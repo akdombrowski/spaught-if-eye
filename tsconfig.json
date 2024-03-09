@@ -63,8 +63,7 @@
     "**/*.jsx",
     "**/*.cjs",
     "**/types/*d.ts",
-    ".next/types/**/*.ts",
-    "src/app/api/spotify/user/top-tracks/route.tee_ess.OLD"
+    ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

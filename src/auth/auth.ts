@@ -14,8 +14,6 @@ import type { SpotifyProfile } from "@auth/core/providers/spotify";
 // import DiscordProvider from "next-auth/providers/discord";
 // import GithubProvider from "next-auth/providers/github";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { env } from "~/env";
 
 const DEBUG_CALLBACKS = false;

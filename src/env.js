@@ -7,16 +7,6 @@ export const env = createEnv({
    * can ensure the app isn't built with invalid env vars.
    */
   server: {
-    DATABASE_HOST: z.string(),
-    DEV_DATABASE_USERNAME: z.string(),
-    DEV_DATABASE_PASSWORD: z.string(),
-    DEV_DATABASE_URL: z
-      .string()
-      .url()
-      .refine(
-        (str) => !str.includes("YOUR_MYSQL_URL_HERE"),
-        "You forgot to change the default URL",
-      ),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -34,8 +24,6 @@ export const env = createEnv({
     // AUTH_URL: z.string(),
     SPOTIFY_CLIENT_ID: z.string(),
     SPOTIFY_CLIENT_SECRET: z.string(),
-    GITHUB_CLIENT_ID: z.string(),
-    GITHUB_CLIENT_SECRET: z.string(),
   },
 
   /**
@@ -53,10 +41,6 @@ export const env = createEnv({
    * runtimes (e.g. middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
-    DATABASE_HOST: process.env.DATABASE_HOST,
-    DEV_DATABASE_URL: process.env.DEV_DATABASE_URL,
-    DEV_DATABASE_USERNAME: process.env.DEV_DATABASE_USERNAME,
-    DEV_DATABASE_PASSWORD: process.env.DEV_DATABASE_PASSWORD,
     NODE_ENV: process.env.NODE_ENV,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     // NEXTAUTH_URL: process.env.NEXTAUTH_URL,
@@ -64,8 +48,6 @@ export const env = createEnv({
     // NEXT_PUBLIC_AUTH_URL: process.env.NEXT_PUBLIC_AUTH_URL,
     SPOTIFY_CLIENT_ID: process.env.SPOTIFY_CLIENT_ID,
     SPOTIFY_CLIENT_SECRET: process.env.SPOTIFY_CLIENT_SECRET,
-    GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
-    GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
