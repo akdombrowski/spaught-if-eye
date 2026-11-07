@@ -11,7 +11,7 @@
     "tsc:test": "tsc --pretty"
   },
   "dependencies": {
-    "@auth/core": "^0.28.1",
+    "@auth/core": "^0.41.0",
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
